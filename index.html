@@ -83,10 +83,9 @@ section{position:relative}
   border-bottom-color:var(--line);
 }
 .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
-.brand{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:.12em}
-.brand img{height:36px;width:36px;border-radius:9px}
-.brand span{color:var(--text)}
-.brand b{color:var(--lime);font-weight:700}
+.brand{display:flex;align-items:center}
+.brand img{height:40px;width:auto}
+@media(max-width:820px){.brand img{height:32px}}
 .nav-links{display:flex;gap:34px;align-items:center;font-size:14.5px;font-weight:500;color:var(--muted)}
 .nav-links a{transition:color .2s}
 .nav-links a:hover{color:var(--lime)}
@@ -328,8 +327,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-
 <header class="header" id="top">
   <div class="container nav">
     <a class="brand" href="#top" aria-label="Carprix home">
-      <img src="assets/logo-icon.png" alt="Carprix logo" width="36" height="36">
-      <span>CARPRI<b>X</b></span>
+      <img src="assets/logo-wordmark.png" alt="CARPRIX — Accurate. Community. Pricing." width="1756" height="376">
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
       <a href="#platform">Platform</a>
@@ -358,7 +356,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-
     <div class="hero-visual">
       <div class="corvette-wrap">
         <div class="corvette-glow"></div>
-        <img class="car" src="assets/corvette.png" alt="Red Corvette Stingray with Carprix livery" width="1204" height="705" fetchpriority="high">
+        <img class="car" src="assets/corvette.png" alt="Red Corvette Stingray with Carprix livery" width="958" height="664" fetchpriority="high">
         <div class="chip chip-price">
           <div class="l">Final valuation</div>
           <div class="v">$ 68,400</div>
