@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage billing — Carprix</title>
-<meta name="description" content="Update your payment method, download invoices, give notice of non-renewal or end your Carprix membership early.">
+<meta name="description" content="Update your payment method, download invoices, request Guardian Monitoring, give notice of non-renewal or end your Carprix membership early.">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://carprixapp.com/billing/manage.html">
 <meta name="theme-color" content="#050604">
@@ -46,7 +46,7 @@
     <div class="page-head">
       <div class="kicker">Billing</div>
       <h1>Manage your membership.</h1>
-      <p>Update your card or bank account, download invoices and receipts, give notice of non-renewal or end your membership early. Use the e-mail you applied with and your application reference (it's in your confirmation e-mail and in every receipt).</p>
+      <p>Update your card or bank account, download invoices and receipts, request Guardian Monitoring, give notice of non-renewal or end your membership early. Use the e-mail you applied with and your application reference (it's in your confirmation e-mail and in every receipt).</p>
     </div>
 
     <!-- Membership overview — only with ?app= in the URL; GET /status returns no personal data -->
@@ -83,6 +83,48 @@
         <div class="notice notice--error" id="portalNotice" hidden></div>
         <div class="card__actions">
           <button class="btn btn-lime" type="submit" id="portalBtn">Open billing portal <span class="arr" aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Guardian Monitoring request (POST /guardian-monitoring, D16 — optional, at the member's request) -->
+    <section class="card" aria-labelledby="gm-title">
+      <h2 id="gm-title">Guardian Monitoring</h2>
+      <p>Optional, at the member's request: your co-responsible party can follow the vehicle's location and driving data through Carprix — available after delivery. Request it here if you did not when you applied.</p>
+      <div class="disclosure">
+        <strong>Before you request it.</strong>
+        <ul>
+          <li>Guardian Monitoring is <strong>informational</strong>: the co-responsible party sees the vehicle's location, speed, trips and event alerts. Nothing acts on the vehicle, and it changes no responsibility of either of you under the agreement.</li>
+          <li>Carprix <strong>confirms the election by e-mail to both of you</strong>; it then forms part of your Subscription Agreement. <strong>Withdrawing or narrowing it later requires notice from both</strong> the member and the co-responsible party.</li>
+          <li>Available where the vehicle is equipped for it. If your Subscription Agreement states a Guardian Monitoring fee, it applies from activation; <strong>no fee applies where the member is under 25</strong>. Details: Subscription Agreement, Section 19.7, and the <a href="/privacy/">Privacy Policy</a>.</li>
+        </ul>
+      </div>
+      <p class="gm-note" id="gmStatus" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.6 3.1 8.5 7.5 9.8 4.4-1.3 7.5-5.2 7.5-9.8V6L12 3z"/><path d="m9 12 2 2 4-4.5"/></svg><span></span></p>
+      <form id="gmForm" class="form mt-22" novalidate>
+        <div class="fields">
+          <div class="field" id="f-gapp">
+            <label class="field__label" for="gapp">Application reference</label>
+            <input class="input mono" id="gapp" name="application_id" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" required aria-describedby="hint-gapp err-gapp">
+            <p class="field__hint" id="hint-gapp">26 characters — in your confirmation e-mail and every receipt.</p>
+            <p class="field__error" id="err-gapp">Enter your 26-character application reference.</p>
+          </div>
+          <div class="field" id="f-gemail">
+            <label class="field__label" for="gemail">E-mail</label>
+            <input class="input" id="gemail" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="hint-gemail err-gemail">
+            <p class="field__hint" id="hint-gemail">The member's e-mail used on the application — the request comes from the member.</p>
+            <p class="field__error" id="err-gemail">Enter a valid e-mail address.</p>
+          </div>
+          <div class="field field--full" id="f-gconfirm">
+            <label class="check">
+              <input type="checkbox" id="gconfirm" name="confirm" required aria-describedby="err-gconfirm">
+              <span>I am the member and I request Guardian Monitoring for this membership. I understand that my co-responsible party will be able to follow the vehicle's location and driving data through Carprix, that Carprix confirms the election to both of us by e-mail, and that withdrawing it later requires notice from both of us.</span>
+            </label>
+            <p class="field__error" id="err-gconfirm">Please confirm the request to continue.</p>
+          </div>
+        </div>
+        <div class="notice" id="gmNotice" hidden></div>
+        <div class="card__actions">
+          <button class="btn btn-lime" type="submit" id="gmBtn">Request Guardian Monitoring <span class="arr" aria-hidden="true">→</span></button>
         </div>
       </form>
     </section>
@@ -156,11 +198,11 @@
     var CB = window.CarprixBilling;
     var $ = function (id) { return document.getElementById(id); };
     var app = String(CB.ui.qs('app') || '').trim().toLowerCase();
-    if (CB.isAppId(app)) { $('app').value = app; $('capp').value = app; }
+    if (CB.isAppId(app)) { $('app').value = app; $('capp').value = app; $('gapp').value = app; }
 
-    // Keep the two reference/e-mail pairs in sync (one identity, two actions)
-    function mirror(a, b) { $(a).addEventListener('input', function () { $(b).value = $(a).value; }); }
-    mirror('app', 'capp'); mirror('capp', 'app'); mirror('email', 'cemail'); mirror('cemail', 'email');
+    // Keep the reference/e-mail fields of the three forms in sync (one identity, three actions)
+    function sync(ids) { ids.forEach(function (a) { $(a).addEventListener('input', function () { ids.forEach(function (b) { if (b !== a) $(b).value = $(a).value; }); }); }); }
+    sync(['app', 'capp', 'gapp']); sync(['email', 'cemail', 'gemail']);
 
     var DEFAULT_ERR = {};
     function mark(fieldId, invalid, message) {
@@ -222,8 +264,11 @@
           ['Remaining balance', s === 'termination_pending_payment' ? CB.ui.formatUsd(d.balance_due) : ''], ['Invoice due', s === 'termination_pending_payment' ? CB.ui.formatDate(term.due_at) : ''],
           ['Balance paid', CB.ui.formatDate(term.balance_paid_at)],
           ['Return meeting point', rt.meeting_point], ['Return scheduled', rt.returned_at ? '' : CB.ui.formatDateTime(when(rt))], ['Returned', CB.ui.formatDate(rt.returned_at)],
+          // Guardian Monitoring (D16): "Not requested" is shown only while the membership is open; requested/active/declined always
+          ['Guardian Monitoring', (CB.gm.view(d).status !== 'not_requested' || ['terminated', 'refused', 'canceled'].indexOf(s) === -1) ? CB.gm.label(d) : ''],
         ];
         kv($('ov-kv'), rows);
+        CB.ui.renderGmNote($('gmStatus'), d, s);
         var inv = $('ov-invoice');
         if (s === 'termination_pending_payment' && CB.isInvoiceUrl(d.hosted_invoice_url)) { inv.href = d.hosted_invoice_url; inv.hidden = false; } else { inv.hidden = true; inv.removeAttribute('href'); }
         $('ov-actions').hidden = false;
@@ -253,6 +298,40 @@
           if (err.status === 403) { mark('f-email', true, 'This e-mail does not match the application.'); $('email').focus(); }
           if (err.status === 404) { mark('f-app', true, 'We could not find an application with this reference.'); $('app').focus(); }
         });
+    });
+
+    // ---- Guardian Monitoring request (POST /guardian-monitoring — idempotent; explicit opt-in) ----
+    $('gmForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var notice = $('gmNotice'); CB.ui.hideNotice(notice);
+      var id = $('gapp').value.trim().toLowerCase(), email = $('gemail').value.trim(), confirm = $('gconfirm').checked;
+      var bad = null;
+      mark('f-gapp', !validId(id)); if (!validId(id)) bad = bad || $('gapp');
+      mark('f-gemail', !CB.isEmail(email)); if (!CB.isEmail(email)) bad = bad || $('gemail');
+      mark('f-gconfirm', !confirm); if (!confirm) bad = bad || $('gconfirm');
+      if (bad) { bad.focus(); return; }
+      var btn = $('gmBtn'); CB.ui.setBusy(btn, true, 'Sending your request…');
+      CB.guardianMonitoring(id, email).then(function (d) {
+        CB.ui.setBusy(btn, false);
+        var g = CB.gm.view(d), at = g.requested_at ? CB.ui.formatDate(g.requested_at) : '';
+        var msg, kind = 'ok', label = 'Request sent';
+        if (g.status === 'active') { msg = 'Guardian Monitoring is already active for this membership — your co-responsible party can follow the vehicle\'s location and driving data through Carprix.'; label = 'Already active'; }
+        else if (g.status === 'declined') { msg = 'Guardian Monitoring could not be set up for this membership — our concierge has the details and will be in touch.'; kind = 'info'; label = 'See the concierge'; }
+        else if (d.already_requested) { msg = 'Guardian Monitoring was already requested for this membership' + (at ? ' on ' + at : '') + '. No further action is needed — we confirm it with you and your co-responsible party by e-mail.'; kind = 'info'; label = 'Already requested'; }
+        else { msg = 'Guardian Monitoring requested' + (at ? ' on ' + at : '') + '. We confirm the election to you and your co-responsible party by e-mail — before delivery if the vehicle has not yet been handed over.'; }
+        CB.ui.showNotice(notice, msg, kind);
+        btn.disabled = true; btn.textContent = label;
+        notice.setAttribute('tabindex', '-1'); notice.focus();
+        if (CB.isAppId(id)) loadOverview(id);
+      }).catch(function (err) {
+        CB.ui.setBusy(btn, false);
+        var msg = err.message;
+        if (err.status === 409) msg = 'This membership is closed, so Guardian Monitoring can no longer be requested. Contact the concierge if you think this is a mistake.';
+        else if (err.status === 400 && err.code !== 'validation') msg = 'We could not register the request. Please try again or contact the concierge.';
+        CB.ui.showNotice(notice, msg, err.status === 409 ? 'info' : 'error');
+        if (err.status === 403) { mark('f-gemail', true, 'This e-mail does not match the application.'); $('gemail').focus(); }
+        if (err.status === 404) { mark('f-gapp', true, 'We could not find an application with this reference.'); $('gapp').focus(); }
+      });
     });
 
     // ---- Non-renewal / early termination request ----

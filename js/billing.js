@@ -14,12 +14,13 @@
  *   status(applicationId)          GET  /status?app=     → aggregated status (no PII): status, payments_enabled, contract{next_signer},
  *                                                          payment, kyc_status, vehicle{model,kbb_reference_model,jurisdiction},
  *                                                          delivery{ready,meeting_point,scheduled_at,delivered_at,term_end},
- *                                                          return{meeting_point,scheduled_at,returned_at},
+ *                                                          return{meeting_point,scheduled_at,returned_at}, guardian_monitoring{requested,requested_at?,status},
  *                                                          commitment{min_payments,periods_paid,remaining_*}, termination?, balance_due?, hosted_invoice_url?
  *   checkout(applicationId)        POST /checkout        → { url, id }   (available as soon as the application exists)
  *   portal({ application_id, email } | { session_id })   → { url }
  *   cancelRequest({ application_id, email, reason? })    → { accepted, mode: 'at_period_end', effective_at, message }
  *                                                        | { accepted, mode: 'early_termination', balance_due, hosted_invoice_url, due_at?, message }
+ *   guardianMonitoring(applicationId, email)  POST /guardian-monitoring → { accepted, already_requested, guardian_monitoring{requested,requested_at,status}, message }
  *
  * API base (v0.3.1): production `https://billing.carprixapp.com` when the page is served from carprixapp.com;
  * `https://billing-test.carprixapp.com` when the URL has `?api=test` or the page host is anything else
@@ -29,10 +30,10 @@
  * the pages then hide the Pay button and show "Payments open at launch" — unless the URL has `?preview=1`
  * (internal testing; `CarprixBilling.preview`). The server never blocks POST /checkout.
  *
- * Guardian Monitoring (v0.3.2, D16): `apply()` forwards the optional boolean `guardian_monitoring` in the POST /apply body.
- * The API (v0.3.1) validates only the known fields and ignores the rest, so the flag is accepted but NOT stored yet — until Dev
- * persists it, the preference travels client-side: `?gm=1` on the journey URLs (`pageUrl` carries it) plus a per-application
- * localStorage entry (`CarprixBilling.gm`), which is what lets success.html show the note after the Stripe round-trip.
+ * Guardian Monitoring (v0.3.3, D16): `apply()` forwards the optional boolean `guardian_monitoring` (persisted by the API);
+ * `GET /status` returns `guardian_monitoring: { requested, requested_at?, status: not_requested|requested|active|declined }`
+ * and `guardianMonitoring(applicationId, email)` posts a later request (`POST /guardian-monitoring`, idempotent). The pages read
+ * the block from the API only — `CarprixBilling.gm.describe(d, status)` turns it into the one-line note they show.
  */
 (function () {
   'use strict';
@@ -153,8 +154,7 @@
         accepted_terms_version: String(p.accepted_terms_version),
       };
       if (c.phone) body.cosigner.phone = String(c.phone).trim();
-      // D16 — optional Guardian Monitoring request. Sent only as a real boolean; the API ignores unknown fields today
-      // (lambda/src/lib/validate.mjs picks the known ones), so this is forward-compatible and never breaks validation.
+      // D16 — optional Guardian Monitoring request (v0.3.3 persists it). Only a real boolean: the API rejects "true"/1 with 400.
       if (typeof p.guardian_monitoring === 'boolean') body.guardian_monitoring = p.guardian_monitoring;
       return request('POST', '/apply', body);
     });
@@ -207,22 +207,51 @@
     });
   }
 
-  /* ---- Guardian Monitoring preference (D16) — client-side until the API stores `guardian_monitoring` ---- */
-  var GM_KEY = 'carprix.gm.'; // localStorage key prefix + application id → '1'
-  /** True when Guardian Monitoring was requested for this application: `?gm=1` in the URL, or remembered in this browser. */
-  function gmRequested(appId) {
-    if (qs('gm') === '1') return true;
-    if (!appId) return false;
-    try { return window.localStorage.getItem(GM_KEY + appId) === '1'; } catch (e) { return false; }
+  /**
+   * POST /guardian-monitoring — the member requests Guardian Monitoring after applying (D16, v0.3.3). Explicit opt-in:
+   * the body always carries `requested: true`. Idempotent: an existing request comes back with `already_requested: true`;
+   * an ops decision (`active` / `declined`) is never overwritten. 403 email_mismatch · 404 · 409 application_closed.
+   */
+  function guardianMonitoring(applicationId, email) {
+    return Promise.resolve().then(function () {
+      assert(APP_ID_RE.test(applicationId || ''), 'Missing or invalid application id.');
+      assert(EMAIL_RE.test(email || ''), 'Enter the e-mail you applied with.');
+      return request('POST', '/guardian-monitoring', { application_id: applicationId, email: String(email).trim().toLowerCase(), requested: true });
+    });
   }
-  /** Remember the request for this application in this browser (best effort — storage may be unavailable). */
-  function gmRemember(appId) {
-    if (!appId) return;
-    try { window.localStorage.setItem(GM_KEY + appId, '1'); } catch (e) { /* private mode / blocked storage: the URL still carries gm=1 */ }
+
+  /* ---- Guardian Monitoring view helpers (D16) — the API block is the only source of truth ---- */
+  var GM_STATUSES = ['not_requested', 'requested', 'active', 'declined'];
+  var PRE_DELIVERY = ['awaiting_payment', 'processing_payment', 'paid_awaiting_contract', 'contract_signed', 'kyc_review', 'delivery_scheduled'];
+  /** Normalise `d.guardian_monitoring` (missing block — older API — reads as not requested). */
+  function gmView(d) {
+    var g = (d && d.guardian_monitoring) || {};
+    var status = GM_STATUSES.indexOf(g.status) !== -1 ? g.status : (g.requested === true ? 'requested' : 'not_requested');
+    return { requested: g.requested === true, requested_at: g.requested_at || null, status: status };
+  }
+  /** Short label for overview rows ("Requested on September 2, 2026" · "Active" · "Not available" · "Not requested"). */
+  function gmLabel(d) {
+    var g = gmView(d);
+    if (g.status === 'active') return 'Active';
+    if (g.status === 'declined') return 'Not available — see the concierge\'s e-mail';
+    if (g.status === 'requested' || g.requested) return 'Requested' + (g.requested_at ? ' on ' + formatDate(g.requested_at) : '') + ' — to be confirmed';
+    return 'Not requested';
+  }
+  /**
+   * One-line note for continue/success/manage: null when there is nothing to say (never requested), otherwise
+   * { kind: 'requested'|'active'|'declined', title, text } — `status` is the membership status (delivery ahead or not).
+   */
+  function gmDescribe(d, status) {
+    var g = gmView(d);
+    var ahead = !status || PRE_DELIVERY.indexOf(String(status)) !== -1;
+    if (g.status === 'active') return { kind: 'active', title: 'Guardian Monitoring active', text: 'your co-responsible party can follow the vehicle\'s location and driving data through Carprix.' };
+    if (g.status === 'declined') return { kind: 'declined', title: 'Guardian Monitoring', text: 'could not be set up for this membership — our concierge has the details.' };
+    if (g.status === 'requested' || g.requested) return { kind: 'requested', title: 'Guardian Monitoring requested', text: ahead ? 'we will confirm it with you before delivery.' : 'our concierge will confirm the activation with you.' };
+    return null;
   }
 
   /* ---- small UI helpers shared by the billing pages (no framework) ---- */
-  /** Build a same-site URL (`/billing/continue.html?app=…`), carrying `preview=1` / `api=` / `gm=1` through the journey. */
+  /** Build a same-site URL (`/billing/continue.html?app=…`), carrying `preview=1` / `api=` through the journey. */
   function pageUrl(path, params) {
     var parts = [];
     var p = params || {};
@@ -230,7 +259,6 @@
     if (PREVIEW) parts.push('preview=1');
     var api = String(qs('api') || '').toLowerCase();
     if (api === 'test' || api === 'prod' || api === 'live') parts.push('api=' + api);
-    if (!('gm' in p) && qs('gm') === '1') parts.push('gm=1'); // D16 preference travels with the journey (pass gm explicitly to override)
     return path + (parts.length ? '?' + parts.join('&') : '');
   }
   function setBusy(button, busy, busyLabel) {
@@ -255,6 +283,18 @@
     if (kind === 'error') el.setAttribute('role', 'alert'); else el.setAttribute('role', 'status');
   }
   function hideNotice(el) { if (el) { el.hidden = true; el.textContent = ''; } }
+  /** Render the Guardian Monitoring one-liner into a `.gm-note` element (hidden when there is nothing to say). */
+  function renderGmNote(el, d, status) {
+    if (!el) return;
+    var n = gmDescribe(d, status);
+    el.hidden = !n;
+    if (!n) return;
+    el.setAttribute('data-kind', n.kind);
+    var span = el.querySelector('span') || el;
+    span.innerHTML = '';
+    var b = document.createElement('strong'); b.textContent = n.title;
+    span.appendChild(b); span.appendChild(document.createTextNode(' — ' + n.text));
+  }
   function formatDate(iso) {
     if (!iso) return '';
     var d = new Date(iso);
@@ -291,6 +331,7 @@
     checkout: checkout,
     portal: portal,
     cancelRequest: cancelRequest,
+    guardianMonitoring: guardianMonitoring,
     paymentsOpen: paymentsOpen,
     preview: PREVIEW,
     api: API,
@@ -299,7 +340,7 @@
     isSessionId: function (v) { return SESSION_RE.test(v || ''); },
     isEmail: function (v) { return EMAIL_RE.test(String(v || '').trim()); },
     isInvoiceUrl: isInvoiceUrl,
-    gm: { requested: gmRequested, remember: gmRemember },
-    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
+    gm: { view: gmView, label: gmLabel, describe: gmDescribe },
+    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, renderGmNote: renderGmNote, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
   };
 })();

@@ -52,7 +52,7 @@
       <div class="kicker" id="tierLabel">Membership</div>
       <h1 id="title">Checking your application…</h1>
       <p id="lead">One moment while we load the status of your payment and agreement.</p>
-      <!-- Guardian Monitoring (D16): shown when the application carries ?gm=1 (or was remembered in this browser) — until the API stores the flag -->
+      <!-- Guardian Monitoring (D16, v0.3.3): rendered from GET /status → guardian_monitoring { requested, requested_at?, status } -->
       <p class="gm-note" id="gmNote" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.6 3.1 8.5 7.5 9.8 4.4-1.3 7.5-5.2 7.5-9.8V6L12 3z"/><path d="m9 12 2 2 4-4.5"/></svg><span><strong>Guardian Monitoring requested</strong> — we will confirm it with you before delivery.</span></p>
     </div>
 
@@ -271,15 +271,13 @@
 
     if (!CB.isAppId(app)) { show('v-missing'); head("We can't find an application in this link.", ''); return; }
     $('refId').textContent = app; $('refLine').hidden = false;
-    // Guardian Monitoring (D16): the request travels as ?gm=1 (join → here) and is remembered per application in this browser,
-    // so the note survives the Stripe round-trip (success.html) until the API stores `guardian_monitoring`.
-    var gm = CB.gm.requested(app);
-    if (gm) CB.gm.remember(app);
-    var PRE_DELIVERY = ['awaiting_payment', 'processing_payment', 'paid_awaiting_contract', 'contract_signed', 'kyc_review', 'delivery_scheduled'];
-    function gmNote(status) { $('gmNote').hidden = !(gm && (!status || PRE_DELIVERY.indexOf(status) !== -1)); }
-    gmNote('');
-    var mail = 'mailto:concierge@carprixapp.com?subject=' + encodeURIComponent('Carprix application ' + app + (gm ? ' · Guardian Monitoring requested' : ''));
-    ['resendLink', 'cpHelp', 'payWaitHelp', 'prelaunchHelp', 'reviewHelp', 'otherHelp'].forEach(function (id) { $(id).href = mail + encodeURIComponent(' — ' + ($(id).textContent.trim())); });
+    // Concierge e-mail links carry the reference (and, once known from the API, the Guardian Monitoring request — D16)
+    var HELP_LINKS = ['resendLink', 'cpHelp', 'payWaitHelp', 'prelaunchHelp', 'reviewHelp', 'otherHelp'];
+    function setMail(tag) {
+      var mail = 'mailto:concierge@carprixapp.com?subject=' + encodeURIComponent('Carprix application ' + app + (tag || ''));
+      HELP_LINKS.forEach(function (id) { $(id).href = mail + encodeURIComponent(' — ' + ($(id).textContent.trim())); });
+    }
+    setMail('');
     ['paidNext', 'processingDetails'].forEach(function (id) { $(id).href = CB.ui.pageUrl('/billing/success.html', { app: app }); });
     ['paidManage', 'otherManage', 'signManage', 'reviewManage', 'deliveryManage', 'navManage'].forEach(function (id) { $(id).href = CB.ui.pageUrl('/billing/manage.html', { app: app }); });
 
@@ -299,11 +297,13 @@
       var dl = d.delivery || {}, rt = d['return'] || {}, v = d.vehicle || {}, term = d.termination || {};
       var kyc = String(d.kyc_status || '');
       var open = CB.paymentsOpen(d);
+      var g = CB.gm.view(d);
       var key = [s, cs, !!c.subscriber_signed, !!c.cosigner_signed, !!d.checkout_available, open, kyc, v.model, dl.status, dl.meeting_point, when(dl), dl.delivered_at, dl.term_end,
-                 rt.meeting_point, when(rt), rt.returned_at, d.balance_due, d.hosted_invoice_url, term.due_at, term.balance_paid_at, d.cancel && d.cancel.effective_at].join('|');
+                 rt.meeting_point, when(rt), rt.returned_at, d.balance_due, d.hosted_invoice_url, term.due_at, term.balance_paid_at, d.cancel && d.cancel.effective_at, g.status, g.requested].join('|');
       if (key === lastKey) return; // avoid re-announcing identical state
       lastKey = key;
-      gmNote(s); // "Guardian Monitoring requested" only while delivery is still ahead
+      CB.ui.renderGmNote($('gmNote'), d, s); // Guardian Monitoring (D16): requested / active / declined — from the API only
+      setMail(g.requested || g.status === 'active' ? ' · Guardian Monitoring' : '');
 
       if (s === 'awaiting_payment') {
         if (!open) { show('v-prelaunch'); head('Thanks — your application is in.', 'Payments open at launch — we will e-mail you when checkout is available.'); return; }

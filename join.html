@@ -140,14 +140,13 @@
               <input class="input" id="c-phone" name="cosigner_phone" type="tel" autocomplete="off" inputmode="tel" maxlength="32" placeholder="+1 305 000 0000" aria-describedby="err-c-phone">
               <p class="field__error" id="err-c-phone">Enter a valid phone number with country code, or leave it empty.</p>
             </div>
-            <!-- Guardian Monitoring (D16): optional request. Sent as `guardian_monitoring: true|false` in POST /apply (ignored by the
-                 API until Dev stores it) and carried to continue.html as ?gm=1 — see js/billing.js. Never required. -->
+            <!-- Guardian Monitoring (D16): optional request, sent as `guardian_monitoring: true|false` in POST /apply (persisted by the API, v0.3.3). Never required. -->
             <div class="field field--full" id="field-gm">
               <label class="check">
                 <input type="checkbox" id="gm" name="guardian_monitoring" value="1" aria-describedby="hint-gm">
                 <span><strong>Request Guardian Monitoring</strong> <span class="opt">(optional)</span> — the co-responsible party will be able to follow the vehicle's location and driving data through Carprix. Available after delivery; it can also be requested later.</span>
               </label>
-              <p class="field__hint" id="hint-gm">Offered at the member's request only. How vehicle and telematics data are handled: <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+              <p class="field__hint" id="hint-gm">Offered at the member's request only; included at no fee for members under 25. How vehicle and telematics data are handled: <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.</p>
             </div>
           </div>
         </fieldset>
@@ -157,7 +156,7 @@
         <h2>Before you continue</h2>
         <p>Please read — these terms apply to every Carprix membership.</p>
         <div class="disclosure" id="key-terms">
-          <strong>Key terms.</strong> Your membership is <strong>billed quarterly in advance, in USD</strong>, and <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires <strong>settling the remaining balance</strong> and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. After payment you and your co-responsible party sign the Subscription Agreement (you first) and we complete the compliance review — identity, licence, insurance. Carprix may decline an application after review; the payment is then refunded in full. Delivery within 30 days at the handover meeting point confirmed at signing. <strong>Insurance is your responsibility.</strong> The member and the co-responsible party are <strong>jointly and severally responsible</strong> under the agreement.
+          <strong>Key terms.</strong> Your membership is <strong>billed quarterly in advance, in USD</strong>, and <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires <strong>settling the remaining balance</strong> and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. After payment you and your co-responsible party sign the Subscription Agreement (you first) and we complete the compliance review — identity, licence, insurance. Carprix may decline an application after review; the payment is then refunded in full. Delivery within 30 days at the handover meeting point confirmed at signing. <strong>Insurance is your responsibility.</strong> The member and the co-responsible party are <strong>jointly and severally responsible</strong> under the agreement. <strong>Drivers under 25:</strong> the insurance deductible may be up to USD 5,000 per claim, a refundable Additional Security Deposit equal to that deductible is invoiced before delivery, and Guardian Monitoring is included at no fee for members under 25.
         </div>
         <div class="field mt-18" id="field-terms">
           <label class="check">
@@ -285,22 +284,20 @@
         firstBad.focus({ preventScroll: false });
         return;
       }
-      var gm = field('gm').checked; // Guardian Monitoring (D16) — optional
       var payload = {
         tier: form.querySelector('input[name="tier"]:checked').value,
         subscriber: { name: field('s-name').value, email: field('s-email').value, phone: field('s-phone').value },
         cosigner: { name: field('c-name').value, email: field('c-email').value, phone: field('c-phone').value },
         accepted_terms_version: form.querySelector('input[name="accepted_terms_version"]').value,
-        guardian_monitoring: gm,
+        guardian_monitoring: field('gm').checked, // Guardian Monitoring (D16) — optional, persisted by the API (v0.3.3)
       };
       CB.ui.setBusy(submitBtn, true, 'Sending your application…');
       form.setAttribute('aria-busy', 'true');
       CB.apply(payload).then(function (data) {
         var id = data && data.application_id;
         if (!CB.isAppId(id)) throw new CB.ApiError('We received your application but could not open the next step. Please contact the concierge.', 0, 'bad_response');
-        if (gm) CB.gm.remember(id); // the API does not store the flag yet — keep it in this browser as well as in the URL
-        // Always build our own URL (never follow a URL from the response blindly); carries ?preview=1 / ?api= / gm=1 through
-        window.location.assign(CB.ui.pageUrl('/billing/continue.html', { app: id, gm: gm ? '1' : null }));
+        // Always build our own URL (never follow a URL from the response blindly); carries ?preview=1 / ?api= through
+        window.location.assign(CB.ui.pageUrl('/billing/continue.html', { app: id }));
       }).catch(function (err) {
         form.removeAttribute('aria-busy');
         CB.ui.setBusy(submitBtn, false);
