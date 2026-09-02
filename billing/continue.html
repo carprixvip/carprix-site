@@ -407,9 +407,13 @@
       $('pollNote').hidden = false;
       $('pollText').textContent = 'This page updates automatically (every ' + Math.round(ms / 1000) + ' s).';
     }
+    var fetches = 0;
     function poll() {
       if (stopped) return;
-      if (document.hidden) { schedule(BASE); return; } // don't hammer the API in a background tab
+      // Background tab: the FIRST fetch always runs (a tab opened from the e-mail must not sit on "Checking…" until focused);
+      // only the periodic re-polls back off while hidden — visibilitychange below resumes them immediately.
+      if (document.hidden && fetches > 0) { schedule(BASE); return; }
+      fetches += 1;
       CB.status(app).then(function (d) {
         delay = BASE;
         render(d);
