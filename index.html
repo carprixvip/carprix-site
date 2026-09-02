@@ -3,370 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carprix — Accurate Crowd-Sourced Car Pricing</title>
-<meta name="description" content="Carprix works for everyone who needs accurate car quotes. A patented crowd-sourced pricing engine for cars, trucks and motorcycles — powered by a community of dealers and experts, not big corporations.">
+<title>Carprix — Luxury SUVs, by subscription · choose. sign. drive.</title>
+<meta name="description" content="Carprix is a quarterly membership for luxury SUVs in three tiers — ALFA, BRAVO and DELTA. One flat quarterly price in USD, vehicles sourced globally, one agreement signed by you and your co-responsible party. choose. sign. drive.">
 <link rel="canonical" href="https://carprixapp.com/">
 <meta name="theme-color" content="#050604">
-<!-- Open Graph -->
+<!-- Open Graph / Twitter -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://carprixapp.com/">
-<meta property="og:title" content="Carprix — Accurate Crowd-Sourced Car Pricing">
-<meta property="og:description" content="A patented crowd-sourced pricing engine for cars, trucks and motorcycles. Accurate. Community. Pricing.">
+<meta property="og:site_name" content="Carprix">
+<meta property="og:title" content="Carprix — Luxury SUVs, by subscription">
+<meta property="og:description" content="Quarterly membership in three tiers. One flat price in USD, vehicles sourced globally, two signatures, one agreement. choose. sign. drive.">
 <meta property="og:image" content="https://carprixapp.com/assets/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CARPRIX — choose. sign. drive. Luxury SUVs, by subscription. Tiers ALFA, BRAVO and DELTA.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Carprix — Accurate Crowd-Sourced Car Pricing">
-<meta name="twitter:description" content="A patented crowd-sourced pricing engine for cars, trucks and motorcycles. Accurate. Community. Pricing.">
+<meta name="twitter:title" content="Carprix — Luxury SUVs, by subscription">
+<meta name="twitter:description" content="Quarterly membership in three tiers. One flat price in USD, vehicles sourced globally, two signatures, one agreement. choose. sign. drive.">
 <meta name="twitter:image" content="https://carprixapp.com/assets/og-image.jpg">
 <!-- Icons -->
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/carprix.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Carprix, LLC",
-  "url": "https://carprixapp.com/",
-  "logo": "https://carprixapp.com/assets/logo-icon.png",
-  "slogan": "Accurate. Community. Pricing.",
-  "address": { "@type": "PostalAddress", "addressLocality": "Coral Gables", "addressRegion": "FL", "addressCountry": "US" }
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://carprixapp.com/#org",
+      "name": "Carprix, LLC",
+      "url": "https://carprixapp.com/",
+      "logo": "https://carprixapp.com/assets/logo-icon.png",
+      "image": "https://carprixapp.com/assets/og-image.jpg",
+      "slogan": "choose. sign. drive.",
+      "email": "concierge@carprixapp.com",
+      "address": { "@type": "PostalAddress", "addressLocality": "Coral Gables", "addressRegion": "FL", "addressCountry": "US" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://carprixapp.com/#website",
+      "url": "https://carprixapp.com/",
+      "name": "Carprix",
+      "publisher": { "@id": "https://carprixapp.com/#org" },
+      "inLanguage": "en-US"
+    }
+  ]
 }
 </script>
-<style>
-:root{
-  --lime:#CFFE25;
-  --lime-soft:#B7D332;
-  --navy:#0E284B;
-  --bg:#050604;
-  --bg-2:#0A0C07;
-  --panel:rgba(255,255,255,.05);
-  --panel-2:rgba(255,255,255,.08);
-  --line:rgba(255,255,255,.10);
-  --text:#F4F6EF;
-  --muted:rgba(244,246,239,.62);
-  --radius:20px;
-  --font-display:"Space Grotesk",system-ui,sans-serif;
-  --font-text:"Inter",system-ui,sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:clip}
-h1,h2,h3{text-wrap:balance}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--font-text);
-  font-size:16px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-img{max-width:100%;height:auto;display:block}
-video{max-width:100%;display:block}
-a{color:inherit;text-decoration:none}
-.container{width:min(1180px,92%);margin:0 auto}
-section{position:relative}
-
-/* ---------- Header ---------- */
-.header{
-  position:fixed;inset:0 0 auto 0;z-index:100;
-  transition:background .3s,border-color .3s;
-  border-bottom:1px solid transparent;
-}
-.header.scrolled{
-  background:rgba(5,6,4,.72);
-  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  border-bottom-color:var(--line);
-}
-.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
-.brand{display:flex;align-items:center}
-.brand img{height:40px;width:auto}
-@media(max-width:820px){.brand img{height:32px}}
-.nav-links{display:flex;gap:34px;align-items:center;font-size:14.5px;font-weight:500;color:var(--muted)}
-.nav-links a{transition:color .2s}
-.nav-links a:hover{color:var(--lime)}
-.btn{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:.02em;
-  padding:13px 26px;border-radius:999px;border:1px solid transparent;
-  cursor:pointer;transition:transform .2s,box-shadow .2s,background .2s,color .2s;
-  white-space:nowrap;
-}
-.btn-lime{background:var(--lime);color:#0B0D06;box-shadow:0 0 0 rgba(207,254,37,0)}
-.btn-lime:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(207,254,37,.35)}
-.btn-ghost{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.03)}
-.btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
-.btn .arr{transition:transform .2s}
-.btn:hover .arr{transform:translateX(4px)}
-.menu-toggle{display:none;background:none;border:0;color:var(--text);font-size:26px;cursor:pointer}
-
-/* ---------- Hero ---------- */
-.hero{
-  min-height:100svh;
-  display:flex;align-items:center;
-  overflow:clip;
-  padding:150px 0 90px;
-  background:
-    radial-gradient(1000px 620px at 82% 30%,rgba(207,254,37,.13),transparent 60%),
-    radial-gradient(760px 500px at 8% 82%,rgba(14,40,75,.55),transparent 65%),
-    var(--bg);
-}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);
-  border:1px solid rgba(207,254,37,.3);border-radius:999px;padding:9px 18px;
-  background:rgba(207,254,37,.06);
-}
-.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime)}
-h1{
-  font-family:var(--font-display);
-  font-size:clamp(40px,5.4vw,72px);
-  line-height:1.04;letter-spacing:-.02em;font-weight:700;
-  margin:26px 0 22px;
-}
-h1 em{font-style:normal;color:var(--lime)}
-.hero-sub{font-size:clamp(16px,1.4vw,18.5px);color:var(--muted);max-width:56ch}
-.hero-ctas{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
-.hero-note{margin-top:26px;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
-.hero-note svg{width:15px;height:15px;color:var(--lime);flex:none}
-
-.hero-visual{position:relative;display:flex;justify-content:center}
-.corvette-wrap{position:relative;width:100%;max-width:620px}
-.corvette-glow{
-  position:absolute;inset:12% -6% 4% -6%;
-  background:radial-gradient(closest-side,rgba(207,254,37,.28),rgba(207,254,37,.06) 60%,transparent 75%);
-  filter:blur(10px);border-radius:50%;
-}
-.corvette-wrap img.car{position:relative;z-index:2;width:100%;height:auto;filter:drop-shadow(0 34px 44px rgba(0,0,0,.65));animation:floaty 7s ease-in-out infinite}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.chip{
-  position:absolute;z-index:3;
-  background:rgba(10,12,7,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  border:1px solid var(--line);border-radius:16px;padding:13px 17px;
-  box-shadow:0 18px 44px rgba(0,0,0,.5);
-}
-.chip .l{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.chip .v{font-family:var(--font-display);font-weight:700;font-size:19px;color:var(--lime);line-height:1.25}
-.chip .s{font-size:11.5px;color:var(--muted)}
-.chip-price{top:4%;right:0;animation:floaty 7s ease-in-out infinite reverse}
-.chip-agents{bottom:2%;left:0;animation:floaty 8s ease-in-out .5s infinite}
-.chip-agents .dots{display:flex;margin-top:7px}
-.chip-agents .dot{
-  width:24px;height:24px;border-radius:50%;
-  border:2px solid #0A0C07;margin-left:-7px;
-  background:linear-gradient(135deg,var(--lime),var(--lime-soft));
-  font-size:10px;font-weight:700;color:#0B0D06;display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);
-}
-.chip-agents .dot:first-child{margin-left:0}
-.chip-agents .dot.more{background:var(--navy);color:var(--lime);border-color:#0A0C07}
-
-/* ---------- Marquee ---------- */
-.marquee{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;padding:17px 0}
-.marquee-track{display:flex;gap:0;width:max-content;animation:scroll 26s linear infinite}
-.marquee span{
-  font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--muted);padding:0 24px;white-space:nowrap;
-}
-.marquee span b{color:var(--lime);font-weight:600;padding-right:48px}
-@keyframes scroll{to{transform:translateX(-50%)}}
-
-/* ---------- Stats ---------- */
-.stats{padding:96px 0 40px}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.stat{
-  text-align:center;padding:44px 20px;border:1px solid var(--line);border-radius:var(--radius);
-  background:linear-gradient(180deg,var(--panel),transparent);
-  transition:border-color .3s,transform .3s;
-}
-.stat:hover{border-color:rgba(207,254,37,.4);transform:translateY(-4px)}
-.stat .num{font-family:var(--font-display);font-weight:700;font-size:clamp(40px,4.6vw,58px);color:var(--lime);letter-spacing:-.02em}
-.stat .lbl{margin-top:8px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-
-/* ---------- Sections ---------- */
-.section{padding:110px 0}
-.sec-head{max-width:720px;margin-bottom:64px}
-.sec-head.center{margin-inline:auto;text-align:center}
-.kicker{font-size:12.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--lime);margin-bottom:16px}
-h2{font-family:var(--font-display);font-size:clamp(30px,3.6vw,48px);line-height:1.1;letter-spacing:-.015em;font-weight:700}
-.sec-head p{margin-top:18px;color:var(--muted);font-size:17px}
-
-/* Features */
-.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.feature{
-  border:1px solid var(--line);border-radius:var(--radius);padding:38px 34px;
-  background:linear-gradient(160deg,var(--panel),transparent 70%);
-  transition:border-color .3s,transform .3s,background .3s;position:relative;overflow:hidden;
-}
-.feature::after{
-  content:"";position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(closest-side,rgba(207,254,37,.14),transparent);
-  opacity:0;transition:opacity .35s;
-}
-.feature:hover{border-color:rgba(207,254,37,.45);transform:translateY(-5px)}
-.feature:hover::after{opacity:1}
-.feature .ico{
-  width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;
-  background:rgba(207,254,37,.1);border:1px solid rgba(207,254,37,.3);color:var(--lime);margin-bottom:24px;
-}
-.feature .ico svg{width:28px;height:28px;fill:currentColor}
-.feature h3{font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:12px}
-.feature p{color:var(--muted);font-size:15.5px}
-
-/* Engine / video rows */
-.row{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.row + .row{margin-top:110px}
-.row .media{
-  border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
-  box-shadow:0 30px 70px rgba(0,0,0,.55);position:relative;
-  background:var(--navy);
-}
-.row .media video{width:100%;aspect-ratio:16/9;object-fit:cover}
-.row h3{font-family:var(--font-display);font-size:clamp(24px,2.6vw,34px);font-weight:700;line-height:1.15;margin-bottom:16px}
-.row p{color:var(--muted);font-size:16.5px}
-.row .list{margin-top:24px;display:grid;gap:14px}
-.row .list li{list-style:none;display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
-.row .list svg{width:19px;height:19px;color:var(--lime);flex:none;margin-top:3px}
-.code-chip{
-  margin-top:28px;border:1px solid var(--line);border-radius:14px;background:#080A05;
-  font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;line-height:1.7;
-  padding:18px 20px;color:var(--muted);overflow-x:auto;
-}
-.code-chip .k{color:var(--lime)}
-.code-chip .s{color:#9CC5FF}
-
-/* Testimonials */
-.testi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.testi{
-  border:1px solid var(--line);border-radius:var(--radius);padding:34px;
-  background:linear-gradient(180deg,var(--panel),transparent);
-  display:flex;flex-direction:column;gap:20px;transition:border-color .3s,transform .3s;
-}
-.testi:hover{border-color:rgba(207,254,37,.4);transform:translateY(-4px)}
-.testi .starz{color:var(--lime);letter-spacing:4px;font-size:15px}
-.testi q{quotes:none;font-size:16px;color:var(--text);line-height:1.65}
-.testi .who{display:flex;align-items:center;gap:13px;margin-top:auto}
-.testi .av{
-  width:42px;height:42px;border-radius:50%;flex:none;
-  background:linear-gradient(135deg,var(--lime),var(--lime-soft));
-  color:#0B0D06;font-family:var(--font-display);font-weight:700;font-size:15px;
-  display:flex;align-items:center;justify-content:center;
-}
-.testi .who .n{font-weight:600;font-size:15px}
-.testi .who .r{font-size:13px;color:var(--muted)}
-
-/* CTA */
-.cta{padding:0 0 120px}
-.cta-box{
-  border-radius:28px;padding:clamp(48px,7vw,88px) clamp(28px,6vw,80px);
-  background:
-    radial-gradient(700px 320px at 85% 0%,rgba(255,255,255,.25),transparent 60%),
-    linear-gradient(120deg,var(--lime),var(--lime-soft));
-  color:#0B0D06;position:relative;overflow:hidden;
-}
-.cta-box::after{
-  content:"";position:absolute;right:-90px;bottom:-130px;width:460px;height:460px;border-radius:50%;
-  border:2px dashed rgba(11,13,6,.25);
-}
-.cta-box .kicker{color:#0B0D06;opacity:.72}
-.cta-box h2{max-width:15ch}
-.cta-box p{margin:20px 0 36px;max-width:52ch;font-size:17px;color:rgba(11,13,6,.78)}
-.btn-dark{background:#0B0D06;color:var(--lime)}
-.btn-dark:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(11,13,6,.35)}
-
-/* Footer */
-footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-2)}
-.foot-grid{display:flex;justify-content:space-between;gap:36px;flex-wrap:wrap;align-items:flex-start}
-.foot-brand img{height:44px;margin-bottom:16px}
-.foot-brand p{font-size:13.5px;color:var(--muted);max-width:34ch}
-.foot-links{display:flex;gap:56px;flex-wrap:wrap}
-.foot-links .col .t{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-.foot-links .col a{display:block;font-size:14.5px;color:var(--text);opacity:.85;margin-bottom:10px;transition:color .2s}
-.foot-links .col a:hover{color:var(--lime)}
-.foot-bottom{margin-top:44px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
-.foot-bottom b{color:var(--lime);font-weight:600}
-
-/* Reveal animation */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-  .corvette-wrap img.car,.chip,.marquee-track{animation:none!important}
-  html{scroll-behavior:auto}
-}
-
-/* ---------- Responsive ---------- */
-@media(max-width:1024px){
-  .hero-grid{grid-template-columns:1fr;gap:64px}
-  .hero{padding-top:130px}
-  .hero-visual{order:2}
-  .row{grid-template-columns:1fr;gap:36px}
-  .row.flip .media{order:-1}
-}
-@media(max-width:820px){
-  .nav-links{
-    position:fixed;top:76px;right:0;left:0;
-    background:rgba(5,6,4,.97);border-bottom:1px solid var(--line);
-    flex-direction:column;padding:28px 6%;gap:22px;align-items:flex-start;
-    transform:translateY(-130%);transition:transform .3s;z-index:99;
-  }
-  .nav-links.open{transform:none}
-  .menu-toggle{display:block}
-  .features-grid,.testi-grid,.stats-grid{grid-template-columns:1fr}
-  .nav .btn{display:none}
-}
-</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <header class="header" id="top">
   <div class="container nav">
-    <a class="brand" href="#top" aria-label="Carprix home">
-      <img src="assets/logo-wordmark.png" alt="CARPRIX — Accurate. Community. Pricing." width="1756" height="376">
+    <a class="brand" href="/" aria-label="Carprix — home">
+      <picture>
+        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
+        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376" fetchpriority="high">
+      </picture>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-      <a href="#platform">Platform</a>
-      <a href="#engine">Engine</a>
-      <a href="#testimonials">Testimonials</a>
+      <a href="#how">How it works</a>
+      <a href="#membership">Membership</a>
+      <a href="#fleet">The vehicles</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
+      <a class="btn btn-lime nav-cta" href="#membership">Choose your tier <span class="arr" aria-hidden="true">→</span></a>
     </nav>
-    <a class="btn btn-lime" href="#contact">Get a Custom Quote <span class="arr">→</span></a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <a class="btn btn-lime" href="#membership">Choose your tier <span class="arr" aria-hidden="true">→</span></a>
+    <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg class="ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
   </div>
 </header>
 
+<main id="main">
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" aria-labelledby="hero-title">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">Crowd-Sourced Car Valuation</span>
-      <h1>Carprix works for everyone who needs <em>accurate car quotes</em>.</h1>
-      <p class="hero-sub">Our patented method runs a car-quotes social network through a unique aggregation algorithm — a state-of-the-art pricing engine for cars, trucks and motorcycles. That secret sauce is what makes us so precise.</p>
+      <!-- Pre-launch notice (D12 GO 4): static, no dates. Remove at the payments GO together with the API's payments_enabled flip. -->
+      <p class="prelaunch"><span class="prelaunch__dot" aria-hidden="true"></span>Founding applications now open</p>
+      <span class="eyebrow">Luxury SUVs · Quarterly membership</span>
+      <h1 id="hero-title">Luxury SUVs, <em>by subscription.</em></h1>
+      <p class="hero-sub">One flat quarterly price, in USD. Choose your tier, pay the first quarter, sign the agreement with your co-responsible party — and take delivery within 30 days at a meeting point confirmed at signing.</p>
       <div class="hero-ctas">
-        <a class="btn btn-lime" href="#contact">Get a Custom Quote <span class="arr">→</span></a>
-        <a class="btn btn-ghost" href="#platform">See how it works</a>
+        <a class="btn btn-lime" href="#membership">Choose your tier <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
       </div>
-      <p class="hero-note"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Trusted by dealers, experts and buyers across the community.</p>
+      <p class="hero-note"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>From USD 12,000 per quarter · minimum three quarterly payments · renews quarterly · a co-responsible party (co-signer) is required</span></p>
     </div>
     <div class="hero-visual">
-      <div class="corvette-wrap">
-        <div class="corvette-glow"></div>
-        <img class="car" src="assets/corvette.png?v=3" alt="Red Corvette Stingray with Carprix livery" width="1200" height="753" fetchpriority="high">
-        <div class="chip chip-price">
-          <div class="l">Final valuation</div>
-          <div class="v">$ 68,400</div>
-          <div class="s">97% confidence</div>
-        </div>
-        <div class="chip chip-agents">
-          <div class="l">Agents responding</div>
-          <div class="dots">
-            <span class="dot">JC</span><span class="dot">LA</span><span class="dot">MR</span><span class="dot">ED</span><span class="dot more">+9</span>
+      <!-- TODO photo: hero SUV (tier DELTA — Defender 110 or BMW X5), 3/4 front, dark background, lime rim light,
+           WebP ≤200 KB with width/height + fetchpriority="high". Typographic placeholder until vehicle photography exists. -->
+      <div class="ph hero-card" role="img" aria-label="choose. sign. drive. — the three steps of a Carprix membership">
+        <div class="hero-card__words" aria-hidden="true"><span>choose.</span><span>sign.</span><span>drive.</span></div>
+        <div class="hero-card__meta" aria-hidden="true">
+          <div class="chip">
+            <div class="l">Membership tiers</div>
+            <div class="v">ALFA · BRAVO · DELTA</div>
+            <div class="s">Audi · BMW · Land Rover</div>
+          </div>
+          <div class="chip">
+            <div class="l">Billing</div>
+            <div class="v">Quarterly · USD</div>
+            <div class="s">in advance · renews quarterly</div>
           </div>
         </div>
       </div>
@@ -374,267 +123,275 @@ footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--bg-
   </div>
 </section>
 
-<!-- MARQUEE -->
+<!-- MARQUEE (decorative — the tagline also appears as text in the footer) -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track" id="marqueeTrack">
-    <span>Accurate <b>•</b> Community <b>•</b> Pricing <b>•</b> Cars <b>•</b> Trucks <b>•</b> Motorcycles <b>•</b></span>
+    <span><i>choose.</i> <b>•</b> <i>sign.</i> <b>•</b> <i>drive.</i> <b>•</b> Audi Q3 <b>•</b> Land Rover Evoque <b>•</b> Audi Q5 <b>•</b> BMW X4 <b>•</b> BMW X5 <b>•</b> Land Rover Defender <b>•</b></span>
   </div>
 </div>
 
-<!-- STATS -->
-<section class="stats">
-  <div class="container stats-grid">
-    <div class="stat reveal"><div class="num" data-count="131" data-suffix="K+">131K+</div><div class="lbl">Broadcast users</div></div>
-    <div class="stat reveal"><div class="num" data-count="500" data-suffix="M+">500M+</div><div class="lbl">Responded queries</div></div>
-    <div class="stat reveal"><div class="num" data-count="99" data-suffix="%+">99%+</div><div class="lbl">Uptime</div></div>
-  </div>
-</section>
-
-<!-- PLATFORM / FEATURES -->
-<section class="section" id="platform">
+<!-- HOW IT WORKS -->
+<section class="section how" id="how" aria-labelledby="how-title">
   <div class="container">
     <div class="sec-head center reveal">
-      <div class="kicker">The Platform</div>
-      <h2>Never random-price again.</h2>
-      <p>A crowd-sourced valuation system used by both car dealers and car buyers — a decentralized solution that serves the Carprix community, not big corporations.</p>
+      <div class="kicker">How it works</div>
+      <h2 id="how-title">Three words. One membership.</h2>
+      <p>Pay the first quarter, sign the agreement with your co-responsible party, clear the compliance review — and take delivery within 30 days.</p>
     </div>
-    <div class="features-grid">
-      <div class="feature reveal">
-        <div class="ico"><svg fill="currentColor" data-bbox="0.997 0.999 30.005 30.001" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" data-type="shape">
-    <g>
-        <path d="M4.78 6.65a.996.996 0 1 0 1.31-1.5L4.05 3.38c-.42-.36-1.05-.32-1.41.1s-.32 1.05.1 1.41l2.04 1.77z"/>
-        <path d="M8.58 4.14h.07c.55-.04.97-.52.93-1.07L9.5 1.93C9.46 1.38 8.99.98 8.43 1c-.55.04-.97.52-.93 1.07l.08 1.14c.04.53.48.93 1 .93"/>
-        <path d="M4.14 9.32c-.04-.55-.52-.95-1.07-.93l-1.14.08c-.55.04-.97.52-.93 1.07.04.53.48.93 1 .93h.07l1.14-.08c.55-.04.97-.52.93-1.07"/>
-        <path d="M29.36 3.46a1 1 0 0 0-1.41-.1l-2.04 1.77c-.42.36-.46.99-.1 1.41.2.23.48.34.75.34.23 0 .47-.08.66-.25l2.04-1.77c.42-.36.46-.99.1-1.41z"/>
-        <path d="M23.35 4.14h.07c.52 0 .96-.4 1-.93l.08-1.14c.04-.55-.38-1.03-.93-1.07-.55-.02-1.03.38-1.07.93l-.08 1.14c-.04.55.38 1.03.93 1.07"/>
-        <path d="m30.07 8.47-1.14-.08c-.55-.02-1.03.38-1.07.93s.38 1.03.93 1.07l1.14.08H30c.52 0 .96-.4 1-.93.04-.55-.38-1.03-.93-1.07"/>
-        <path d="M17.56 13.31a1.26 1.26 0 0 0-1.76 0c-.48.48-.48 1.27 0 1.75s1.27.48 1.75 0 .48-1.27 0-1.75z"/>
-        <path d="M17.69 9.28v1.84c.47.15.92.4 1.29.78.37.37.62.82.78 1.29h1.84a5.03 5.03 0 0 0-3.91-3.91"/>
-        <path d="M13.62 15.18h-1.84c.4 1.96 1.95 3.51 3.91 3.91v-1.84c-.48-.16-.92-.41-1.29-.78s-.62-.81-.78-1.29"/>
-        <path d="M14.4 11.89c.37-.37.82-.62 1.29-.78V9.27c-1.96.4-3.51 1.95-3.91 3.91h1.84c.16-.48.41-.92.78-1.29"/>
-        <path d="M18.33 4.14c-5.57-.9-10.8 2.69-11.92 8.17-.01.07-.02.13-.02.2v2.67L3.2 19.4c-.23.3-.27.71-.1 1.05s.52.55.9.55h2.2v3.54c0 .91.4 1.75 1.11 2.33.7.57 1.61.8 2.51.61l1.95-.41c.69.57 1.79 1.74 1.79 2.93 0 .55.45 1 1 1h8.45c.55 0 1-.45 1-1l.02-6.55c0-.39.07-.78.2-1.15l.33-.92c.11-.3.27-.6.53-.96 1.56-2.19 2.2-4.89 1.8-7.59-.65-4.41-4.17-7.98-8.56-8.69m5.36 11.05h-.07a7.02 7.02 0 0 1-5.93 5.93v.07c0 .55-.45 1-1 1s-1-.45-1-1v-.07a7.02 7.02 0 0 1-5.93-5.93h-.07c-.55 0-1-.45-1-1s.45-1 1-1h.07a7.02 7.02 0 0 1 5.93-5.93v-.07c0-.55.45-1 1-1s1 .45 1 1v.07c3.06.44 5.49 2.87 5.93 5.93h.07c.55 0 1 .45 1 1s-.45 1-1 1"/>
-        <path d="M18.98 16.48c-.37.37-.81.62-1.29.78v1.84c1.96-.4 3.51-1.95 3.91-3.91h-1.84c-.15.47-.4.92-.78 1.29"/>
-    </g>
-</svg></div>
-        <h3>Never Random Price Again</h3>
-        <p>Carprix's custom algorithm aggregates scattered valuations and determines the most accurate value of your car — every single time.</p>
-      </div>
-      <div class="feature reveal">
-        <div class="ico"><svg fill="currentColor" data-bbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-type="shape">
-    <g>
-        <path d="M263.5 437.75v-49.61c0-4.14-3.36-7.5-7.5-7.5s-7.5 3.36-7.5 7.5v49.61c-17.1 3.48-30 18.64-30 36.75 0 20.68 16.82 37.5 37.5 37.5s37.5-16.82 37.5-37.5c0-18.11-12.9-33.26-30-36.75"/>
-        <path d="M391 397c-18.11 0-33.26 12.9-36.75 30H336c-6.89 0-12.5-5.61-12.5-12.5v-36.36c0-4.14-3.36-7.5-7.5-7.5s-7.5 3.36-7.5 7.5v36.36c0 15.16 12.34 27.5 27.5 27.5h18.25c3.48 17.1 18.64 30 36.75 30 20.68 0 37.5-16.82 37.5-37.5S411.68 397 391 397"/>
-        <path d="M196 370.64c-4.14 0-7.5 3.36-7.5 7.5v36.36c0 6.89-5.61 12.5-12.5 12.5h-18.25c-3.48-17.1-18.64-30-36.75-30-20.68 0-37.5 16.82-37.5 37.5S100.32 472 121 472c18.11 0 33.26-12.9 36.75-30H176c15.16 0 27.5-12.34 27.5-27.5v-36.36c0-4.14-3.36-7.5-7.5-7.5"/>
-        <path d="M72.5 172.5c0 6.904-5.596 12.5-12.5 12.5s-12.5-5.596-12.5-12.5S53.096 160 60 160s12.5 5.596 12.5 12.5"/>
-        <path d="M464.5 172.5c0 6.904-5.596 12.5-12.5 12.5s-12.5-5.596-12.5-12.5S445.096 160 452 160s12.5 5.596 12.5 12.5"/>
-        <path d="M449.5 110H396c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5h28.64c-9.29-26.19-34.31-45-63.64-45-2.82 0-5.65.18-8.45.53C330.55 18.8 294.82 0 256 0s-74.55 18.8-96.55 50.53c-2.8-.35-5.62-.53-8.45-.53-29.33 0-54.35 18.81-63.64 45H116c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5H62.5C28.04 110 0 138.04 0 172.5S28.04 235 62.5 235h31.94c-.62-5.75-.94-11.59-.94-17.5C93.5 127.9 166.4 55 256 55s162.5 72.9 162.5 162.5c0 5.91-.33 11.75-.94 17.5h31.94c34.46 0 62.5-28.04 62.5-62.5S483.96 110 449.5 110M60 200c-15.16 0-27.5-12.34-27.5-27.5S44.84 145 60 145s27.5 12.34 27.5 27.5S75.16 200 60 200m392 0c-15.16 0-27.5-12.34-27.5-27.5S436.84 145 452 145s27.5 12.34 27.5 27.5S467.16 200 452 200"/>
-        <path d="M256 320c38.39 0 71.91-21.22 89.47-52.54-12.2-21.76-32.12-38.49-55.59-46.72-8.62 8.79-20.62 14.25-33.88 14.25s-25.26-5.46-33.88-14.25c-23.47 8.23-43.38 24.96-55.59 46.72C184.09 298.78 217.61 320 256 320m35-60h10c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5h-10c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5m-40 0h10c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5h-10c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5m-40 0h10c4.14 0 7.5 3.36 7.5 7.5s-3.36 7.5-7.5 7.5h-10c-4.14 0-7.5-3.36-7.5-7.5s3.36-7.5 7.5-7.5"/>
-        <path d="M213.19 208.07c-3-6.23-4.69-13.2-4.69-20.57 0-26.19 21.31-47.5 47.5-47.5s47.5 21.31 47.5 47.5c0 7.36-1.68 14.34-4.69 20.57 21.84 8.57 40.75 23.62 54.06 42.93 3.64-10.5 5.63-21.78 5.63-33.5 0-56.52-45.98-102.5-102.5-102.5s-102.5 45.98-102.5 102.5c0 11.73 1.99 23 5.63 33.5 13.31-19.31 32.22-34.37 54.06-42.93"/>
-        <path d="M256 365c81.33 0 147.5-66.17 147.5-147.5S337.33 70 256 70s-147.5 66.17-147.5 147.5S174.67 365 256 365m0-265c64.79 0 117.5 52.71 117.5 117.5S320.79 335 256 335s-117.5-52.71-117.5-117.5S191.21 100 256 100"/>
-        <path d="M288.5 187.5c0 17.95-14.55 32.5-32.5 32.5s-32.5-14.55-32.5-32.5S238.05 155 256 155s32.5 14.55 32.5 32.5"/>
-    </g>
-</svg></div>
-        <h3>Win-Win Sharing Strategy</h3>
-        <p>Carprix is a social network for your friends and trusted car experts. Everyone contributes an opinion — everyone gets sharper prices back.</p>
-      </div>
-      <div class="feature reveal">
-        <div class="ico"><svg fill="currentColor" data-bbox="1 1 30 30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" data-type="shape">
-    <g>
-        <path d="M13.75 2c0-.55-.45-1-1-1h-2.5c-.55 0-1 .45-1 1v2.5h4.5z"/>
-        <path d="M22.75 2c0-.55-.45-1-1-1h-2.5c-.55 0-1 .45-1 1v2.5h4.5z"/>
-        <path d="M9.25 30c0 .55.45 1 1 1h2.5c.55 0 1-.45 1-1v-2.5h-4.5z"/>
-        <path d="M18.25 30c0 .55.45 1 1 1h2.5c.55 0 1-.45 1-1v-2.5h-4.5z"/>
-        <path d="M30 9.25h-2.5v4.5H30c.55 0 1-.45 1-1v-2.5c0-.55-.45-1-1-1"/>
-        <path d="M30 18.25h-2.5v4.5H30c.55 0 1-.45 1-1v-2.5c0-.55-.45-1-1-1"/>
-        <path d="M1 10.25v2.5c0 .55.45 1 1 1h2.5v-4.5H2c-.55 0-1 .45-1 1"/>
-        <path d="M1 19.25v2.5c0 .55.45 1 1 1h2.5v-4.5H2c-.55 0-1 .45-1 1"/>
-        <path d="M12.5 12.84v3.66h7v-3.66L16 11.56z"/>
-        <path d="M12.5 18.5h7v2h-7z"/>
-        <path d="M24.5 6.5h-17c-.55 0-1 .45-1 1v17c0 .55.45 1 1 1h17c.55 0 1-.45 1-1v-17c0-.55-.45-1-1-1m-3 16h-11c-.55 0-1-.45-1-1s.45-1 1-1v-7.01c-.41 0-.79-.24-.94-.65a1 1 0 0 1 .6-1.28l5.5-2c.22-.08.46-.08.68 0l5.5 2c.52.19.79.76.6 1.28-.15.41-.53.66-.94.66v7c.55 0 1 .45 1 1s-.45 1-1 1"/>
-    </g>
-</svg></div>
-        <h3>Custom APIs, Chatbots &amp; More</h3>
-        <p>Plug the pricing engine into your own tools. Custom APIs, chatbots and decentralized integrations, built for how dealers actually work.</p>
-      </div>
-      <div class="feature reveal">
-        <div class="ico"><svg fill="currentColor" data-bbox="1 0.996 30 30.004" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" data-type="shape">
-    <g>
-        <path d="m30.5 15.13-1.72-.98-11.29 6.45c-.45.26-.97.4-1.49.4s-1.04-.14-1.49-.4L3.22 14.15l-1.72.98c-.31.18-.5.51-.5.87s.19.69.5.87l14 8c.15.09.33.13.5.13s.34-.04.5-.13l14-8c.31-.18.5-.51.5-.87s-.19-.69-.5-.87"/>
-        <path d="m30.5 21.13-1.72-.98-11.29 6.45c-.45.26-.97.4-1.49.4s-1.04-.14-1.49-.4L3.22 20.15l-1.72.98c-.31.18-.5.51-.5.87s.19.69.5.87l14 8c.15.09.33.13.5.13s.34-.04.5-.13l14-8c.31-.18.5-.51.5-.87s-.19-.69-.5-.87"/>
-        <path d="m1.5 10.87 14 8c.15.09.33.13.5.13s.34-.04.5-.13l14-8c.31-.18.5-.51.5-.87s-.19-.69-.5-.87l-14-8a.98.98 0 0 0-.99 0l-14.01 8c-.31.18-.5.51-.5.87s.19.69.5.87M22 9h1c.55 0 1 .45 1 1s-.45 1-1 1h-1c-.55 0-1-.45-1-1s.45-1 1-1m-8.5 0h5c.55 0 1 .45 1 1s-.45 1-1 1h-5c-.55 0-1-.45-1-1s.45-1 1-1M9 9h1c.55 0 1 .45 1 1s-.45 1-1 1H9c-.55 0-1-.45-1-1s.45-1 1-1"/>
-    </g>
-</svg></div>
-        <h3>Multiple Agents, One Final Price</h3>
-        <p>Many independent valuations go in. One precise, defensible number comes out — with the confidence level to back it up.</p>
-      </div>
-    </div>
+    <ol class="how__grid" role="list">
+      <li class="step reveal">
+        <div class="step__num">01</div>
+        <h3>choose.</h3>
+        <p>Pick ALFA, BRAVO or DELTA. Each tier pairs two SUVs, sourced globally from our owner network; availability and demand decide where your vehicle comes from — and where you drive it. Apply with your co-responsible party (co-signer).</p>
+        <div class="step__watermark" aria-hidden="true">01</div>
+      </li>
+      <li class="step reveal">
+        <div class="step__num">02</div>
+        <h3>sign.</h3>
+        <p>Pay the first quarter through Stripe Checkout — card or US bank account, in USD. The Subscription Agreement then arrives from DocuSign: you sign first, then your co-responsible party. Two signatures, one contract.</p>
+        <div class="step__watermark" aria-hidden="true">02</div>
+      </li>
+      <li class="step reveal">
+        <div class="step__num">03</div>
+        <h3>drive.</h3>
+        <p>After the compliance review — identity, licence, insurance — your vehicle is handed over within 30 days at the meeting point confirmed at signing. The membership renews quarterly: minimum three quarterly payments, with the 9-month term running from delivery.</p>
+        <div class="step__watermark" aria-hidden="true">03</div>
+      </li>
+    </ol>
   </div>
 </section>
 
-<!-- ENGINE -->
-<section class="section" id="engine" style="background:var(--bg-2);border-block:1px solid var(--line)">
+<!-- MEMBERSHIP -->
+<section class="section section--alt pricing" id="membership" aria-labelledby="membership-title">
   <div class="container">
-    <div class="row">
-      <div class="reveal">
-        <div class="kicker">The Engine</div>
-        <h3>Build, automate &amp; scale with Carprix's engine.</h3>
-        <p>Use our APIs and enjoy the full power of our pricing engine — accurate quotes for cars, trucks and motorcycles, delivered straight into your workflow.</p>
-        <ul class="list">
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Real-time valuations from a network of live agents</li>
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Market history and trends for every evaluated vehicle</li>
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Every appraisal saved, searchable and organized</li>
+    <div class="sec-head center reveal">
+      <div class="kicker">Membership</div>
+      <h2 id="membership-title">Three tiers. One flat quarterly price.</h2>
+      <p>Billed quarterly in advance, in USD, and renewed automatically. Minimum three quarterly payments; the 9-month term runs from delivery. Prices exclude taxes.</p>
+    </div>
+
+    <!-- Prices must match lambda/src/lib/catalog.mjs (ALFA 1 200 000 · BRAVO 1 800 000 · DELTA 2 400 000 cents / quarter).
+         The amount charged is always the Stripe Price, never this HTML. Tier TESTE is never rendered here. -->
+    <div class="pricing__grid">
+      <article class="plan reveal" aria-labelledby="plan-alfa">
+        <h3 class="plan__name" id="plan-alfa">ALFA</h3>
+        <p class="plan__vehicles">Audi Q3 · Land Rover Evoque <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
+        <div class="plan__price"><span class="plan__amount">USD 12,000</span><span class="plan__period">/ quarter</span></div>
+        <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <ul class="plan__features">
+          <li>USD 12,000 now, then every 3 months from delivery</li>
+          <li>One agreement, signed by you and your co-responsible party</li>
+          <li>Handover within 30 days at the meeting point confirmed at signing</li>
+          <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
         </ul>
-        <div class="code-chip">
-<pre>GET /v1/quote?vin=1G1YB2D73E5100001
-{
-  "<span class="k">vehicle</span>": "<span class="s">Corvette Stingray</span>",
-  "<span class="k">final_price</span>": <span class="s">68400</span>,
-  "<span class="k">confidence</span>": <span class="s">0.97</span>,
-  "<span class="k">agents</span>": <span class="s">13</span>
-}</pre>
+        <a class="btn btn-ghost btn-block plan__cta" href="/join.html?tier=alfa" data-plan="alfa">Choose ALFA</a>
+      </article>
+
+      <article class="plan plan--highlight reveal" aria-labelledby="plan-bravo">
+        <h3 class="plan__name" id="plan-bravo">BRAVO</h3>
+        <p class="plan__vehicles">Audi Q5 · BMW X4 <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
+        <div class="plan__price"><span class="plan__amount">USD 18,000</span><span class="plan__period">/ quarter</span></div>
+        <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <ul class="plan__features">
+          <li>USD 18,000 now, then every 3 months from delivery</li>
+          <li>One agreement, signed by you and your co-responsible party</li>
+          <li>Handover within 30 days at the meeting point confirmed at signing</li>
+          <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
+        </ul>
+        <a class="btn btn-lime btn-block plan__cta" href="/join.html?tier=bravo" data-plan="bravo">Choose BRAVO</a>
+      </article>
+
+      <article class="plan reveal" aria-labelledby="plan-delta">
+        <h3 class="plan__name" id="plan-delta">DELTA</h3>
+        <p class="plan__vehicles">BMW X5 · Land Rover Defender <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
+        <div class="plan__price"><span class="plan__amount">USD 24,000</span><span class="plan__period">/ quarter</span></div>
+        <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <ul class="plan__features">
+          <li>USD 24,000 now, then every 3 months from delivery</li>
+          <li>One agreement, signed by you and your co-responsible party</li>
+          <li>Handover within 30 days at the meeting point confirmed at signing</li>
+          <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
+        </ul>
+        <a class="btn btn-ghost btn-block plan__cta" href="/join.html?tier=delta" data-plan="delta">Choose DELTA</a>
+      </article>
+    </div>
+
+    <p class="pricing__foot reveal">
+      <strong>Prices in USD, exclusive of taxes.</strong> The first quarter is paid at checkout; the second and third are charged three and six months after delivery, then one quarter at the start of each renewal period — automatically, to the payment method on file. <strong>Minimum three quarterly payments (9 months from delivery).</strong> You may stop renewal at any time; ending the membership before the three payments requires settling the remaining balance and returning the vehicle intact. <strong>Quarterly fees are not refunded after delivery.</strong> A co-responsible party (co-signer) is required. You accept the <a href="/terms/">Terms of Use</a>, the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a> and the <a href="/privacy/">Privacy Policy</a> when you apply, and confirm them again at checkout.
+    </p>
+  </div>
+</section>
+
+<!-- THE VEHICLES (anchor kept as #fleet for existing links) -->
+<section class="section fleet" id="fleet" aria-labelledby="fleet-title">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">The vehicles</div>
+      <h2 id="fleet-title">Six models. Sourced globally.</h2>
+      <p>Carprix is a platform. Every vehicle in the program is supplied by an owner in our global network and made available to you under a single agreement — with Carprix only. Availability and demand decide where a vehicle comes from and where you drive it; the handover meeting point is confirmed when you sign. The specific vehicle, model year and specification are confirmed before delivery and recorded in the handover report.</p>
+    </div>
+    <ul class="fleet__grid" role="list">
+      <!-- TODO photo: each tile becomes a WebP ≤80 KB (loading="lazy", width/height). Until then, typographic placeholders. -->
+      <li class="ph car reveal"><div class="car__tier">Tier ALFA</div><div class="car__name">Audi Q3</div></li>
+      <li class="ph car reveal"><div class="car__tier">Tier ALFA</div><div class="car__name">Land Rover Evoque</div></li>
+      <li class="ph car reveal"><div class="car__tier">Tier BRAVO</div><div class="car__name">Audi Q5</div></li>
+      <li class="ph car reveal"><div class="car__tier">Tier BRAVO</div><div class="car__name">BMW X4</div></li>
+      <li class="ph car reveal"><div class="car__tier">Tier DELTA</div><div class="car__name">BMW X5</div></li>
+      <li class="ph car reveal"><div class="car__tier">Tier DELTA</div><div class="car__name">Land Rover Defender</div></li>
+    </ul>
+    <p class="fleet__note">Models are representative of each tier; Carprix may substitute an equivalent vehicle of the same tier. Manufacturer names are used only to identify the vehicles offered; Carprix is not affiliated with any manufacturer.</p>
+  </div>
+</section>
+
+<!-- CO-RESPONSIBLE PARTY (anchor kept as #cosigner) -->
+<section class="section section--alt cosign" id="cosigner" aria-labelledby="cosign-title">
+  <div class="container cosign__grid">
+    <div class="reveal">
+      <div class="kicker">Co-responsible party</div>
+      <h2 id="cosign-title">Two signatures. One agreement.</h2>
+      <p>Every membership is signed by the member and a co-responsible party (co-signer) — often a parent or another family member. Together they are jointly and severally responsible for the vehicle's condition, for lawful driving and for every fee, fine and consequence of its use — wherever it is driven and whoever drives it. Both sign electronically, in sequence: the member first, then the co-responsible party.</p>
+
+      <!-- Guardian Monitoring (D16): optional, at the member's request — no dates, no app names -->
+      <div class="guardian">
+        <div class="guardian__head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.6 3.1 8.5 7.5 9.8 4.4-1.3 7.5-5.2 7.5-9.8V6L12 3z"/><path d="m9 12 2 2 4-4.5"/></svg>
+          <div>
+            <div class="guardian__label">Optional · at the member's request</div>
+            <h3 id="guardian-title">Guardian Monitoring</h3>
+          </div>
         </div>
-      </div>
-      <div class="media reveal">
-        <video autoplay muted loop playsinline preload="metadata" poster="assets/carprix1-poster.jpg" aria-label="Carprix pricing network animation">
-          <source src="assets/carprix1.mp4" type="video/mp4">
-        </video>
+        <p>At the member's request, the co-responsible party can follow the vehicle's location and driving data through Carprix — available after delivery. Request it when you apply, or at any point during the membership.</p>
       </div>
     </div>
-
-    <div class="row flip">
-      <div class="media reveal">
-        <video autoplay muted loop playsinline preload="metadata" poster="assets/carprix2-poster.jpg" aria-label="Carprix community of agents animation">
-          <source src="assets/carprix2.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="reveal">
-        <div class="kicker">The Community</div>
-        <h3>Real people. Real expertise. One final price.</h3>
-        <p>Carprix is the vehicle social network: chat with dealers and friends, share photos and opinions, and turn collective knowledge into precise regional pricing — while every user's data stays confidential.</p>
-        <ul class="list">
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Broadcast a car to the network and collect expert quotes</li>
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Discuss, compare comps and close deals in the chat</li>
-          <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg> Your evaluations sharpen the market for everyone</li>
-        </ul>
-      </div>
+    <div class="panel reveal">
+      <h3>What you'll need</h3>
+      <ul class="checklist" role="list">
+        <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>A co-responsible party (co-signer) — an adult who signs the agreement with you and shares full responsibility for it.</span></li>
+        <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>Government-issued ID for both signers; identity is verified electronically when you sign in DocuSign.</span></li>
+        <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>Drivers aged 25 or over, holding a licence valid where the vehicle is registered for at least two years.</span></li>
+        <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>A card or US bank account for the first quarter, paid in USD through Stripe Checkout before the agreement is sent.</span></li>
+        <li><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-opacity=".35"/><path d="m8.5 12.2 2.4 2.4 4.8-5.2"/></svg><span>Proof of insurance meeting the Insurance &amp; Driver Requirements, delivered before the vehicle is released.</span></li>
+      </ul>
+      <p class="fine">Insurance is arranged and paid for by the member; Carprix provides none. Permitted use and driver requirements: see the Subscription Agreement.</p>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="section" id="testimonials">
+<!-- FAQ -->
+<section class="section faq" id="faq" aria-labelledby="faq-title">
   <div class="container">
     <div class="sec-head center reveal">
-      <div class="kicker">Testimonials</div>
-      <h2>Results our clients talk about.</h2>
-      <p>Real businesses. Real impact. Real numbers that show how Carprix transforms operations.</p>
+      <div class="kicker">FAQ</div>
+      <h2 id="faq-title">Good questions.</h2>
     </div>
-    <div class="testi-grid">
-      <div class="testi reveal">
-        <div class="starz" aria-hidden="true">★★★★★</div>
-        <q>This app nails the numbers every time. I price trades in minutes, shoot messages to other dealers fast, and my whole inventory history stays organized.</q>
-        <div class="who"><div class="av">NA</div><div><div class="n">N. Alvarez</div><div class="r">Dealer</div></div></div>
-      </div>
-      <div class="testi reveal">
-        <div class="starz" aria-hidden="true">★★★★★</div>
-        <q>Super simple: open it, scan the details, and boom — accurate value. Saves every appraisal, so I'm not digging through notes when a buyer calls back.</q>
-        <div class="who"><div class="av">ED</div><div><div class="n">E. Dawson</div><div class="r">Appraiser</div></div></div>
-      </div>
-      <div class="testi reveal">
-        <div class="starz" aria-hidden="true">★★★★★</div>
-        <q>Fast, clean, and spot-on pricing. I can compare comps, send quotes, and keep all evaluated cars neatly filed — perfect for a busy lot and repeat customers.</q>
-        <div class="who"><div class="av">JC</div><div><div class="n">J. Carter</div><div class="r">Lot manager</div></div></div>
-      </div>
-      <div class="testi reveal">
-        <div class="starz" aria-hidden="true">★★★★★</div>
-        <q>As a used-car guy, I need speed and accuracy. This tool delivers, plus the chat makes deals smoother. Everything I've appraised is saved, searchable, and tidy.</q>
-        <div class="who"><div class="av">LC</div><div><div class="n">L. Chen</div><div class="r">Used-car specialist</div></div></div>
-      </div>
+    <div class="faq__list reveal">
+      <details>
+        <summary>What is the minimum term?</summary>
+        <div class="faq__a"><p>Three quarterly payments — nine months, counted from the delivery of your vehicle. The first quarter is paid at checkout; the second and third are charged three and six months after delivery. After that the membership renews quarter by quarter until you give notice of non-renewal.</p></div>
+      </details>
+      <details>
+        <summary>What happens after I pay?</summary>
+        <div class="faq__a"><p>You receive the Subscription Agreement by e-mail from DocuSign — you sign first, then your co-responsible party. We then complete the compliance review: identity, driving licence and proof of insurance. Carprix may decline an application after review; in that case the payment is refunded in full.</p></div>
+      </details>
+      <details>
+        <summary>Where is the vehicle delivered, and where can I drive it?</summary>
+        <div class="faq__a"><p>Vehicles are sourced globally from our owner network; availability and demand decide where a vehicle comes from and where you drive it. When you sign the agreement you are informed of the handover meeting point, and the same applies to the return. The vehicle is handed over within 30 days of acceptance and stays within the country where it is registered.</p></div>
+      </details>
+      <details>
+        <summary>Who owns the vehicles?</summary>
+        <div class="faq__a"><p>Carprix is a platform. Vehicles are supplied by owners in our global network under separate agreements with Carprix; your contract is with Carprix, LLC only, and you deal with Carprix only — one agreement, one point of contact.</p></div>
+      </details>
+      <details>
+        <summary>Can I end the membership early?</summary>
+        <div class="faq__a">
+          <p>You may stop renewal at any time from <a href="/billing/manage.html">Manage billing</a>; it takes effect at the end of the minimum term or of the quarter already paid, whichever is later. Ending the membership before the three payments is possible only by settling the remaining balance of the three quarters and returning the vehicle intact.</p>
+          <p>Quarterly fees are not refunded after delivery. Full details in the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a>.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Does the membership renew automatically?</summary>
+        <div class="faq__a"><p>Yes. After the minimum term, your card or bank account is charged at the start of each quarter and the membership renews for a further quarter unless you have given notice of non-renewal. You receive a reminder e-mail at least seven days before each renewal charge.</p></div>
+      </details>
+      <details>
+        <summary>Who is responsible for insurance, fines and the vehicle's condition?</summary>
+        <div class="faq__a"><p>The member and the co-responsible party, jointly and severally. Insurance is entirely the member's responsibility and cost; proof of cover is required before the vehicle is released. Fines, tolls, damage beyond fair wear and tear and every other consequence of use are for the member and the co-responsible party. Details in the Subscription Agreement.</p></div>
+      </details>
+      <details>
+        <summary>Is Carprix suited to students abroad?</summary>
+        <div class="faq__a">
+          <p>Yes. A member studying away from home drives; a parent — or another eligible adult — signs as co-responsible party, electronically and from anywhere, and both are jointly and severally responsible under one agreement. Driver requirements (age, licence history, insurance) apply to the member as to every driver; see the Subscription Agreement.</p>
+          <p>At the member's request, <a href="#cosigner">Guardian Monitoring</a> lets the co-responsible party follow the vehicle's location and driving data through Carprix — optional, available after delivery, and it can be requested at any point during the membership.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Does Carprix track the vehicle?</summary>
+        <div class="faq__a"><p>Vehicles may be fitted with GPS and telematics equipment. Where fitted, location, mileage, speed and driving-event data are collected for asset protection and compliance — to protect the vehicle, administer the agreement and respond to accidents or theft. Access for the co-responsible party is offered as Guardian Monitoring, at the member's request. What is collected, why and for how long is described in the <a href="/privacy/">Privacy Policy</a>.</p></div>
+      </details>
+      <details>
+        <summary>How can I pay?</summary>
+        <div class="faq__a"><p>By card or US bank account (ACH) through Stripe Checkout, in USD. The first quarter is paid before the agreement is sent for signature; the following quarters are charged automatically to the same payment method. Bank debits can take up to four business days to clear.</p></div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta" id="contact">
+<!-- CONTACT -->
+<section class="cta" id="contact" aria-labelledby="contact-title">
   <div class="container">
     <div class="cta-box reveal">
-      <div class="kicker">Let's Talk</div>
-      <h2>Let's talk about your goals.</h2>
-      <p>Whether you're exploring ideas or ready to deploy across your operations, we're here to help. Reach out and our team will walk you through the best approach for your business.</p>
-      <a class="btn btn-dark" href="mailto:contato@carprix.com.br?subject=Custom%20quote%20request%20—%20carprixapp.com">Get a Custom Quote <span class="arr">→</span></a>
+      <div class="kicker">Concierge</div>
+      <h2 id="contact-title">Talk to the concierge.</h2>
+      <p>Questions about a tier, availability or the handover? Write to us — a person answers.</p>
+      <a class="btn btn-dark" href="mailto:concierge@carprixapp.com?subject=Carprix%20membership%20enquiry">E-mail the concierge <span class="arr" aria-hidden="true">→</span></a>
+      <div class="contact-lines">
+        <span>concierge@carprixapp.com</span>
+        <span>Carprix, LLC — Coral Gables, Florida, USA</span>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
+</main>
+
+<footer class="footer">
   <div class="container">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img src="assets/logo-wordmark.png" alt="Carprix — Accurate. Community. Pricing.">
-        <p>The state-of-the-art crowd-sourced pricing engine for cars, trucks and motorcycles.</p>
+        <picture>
+          <source srcset="/assets/logo-wordmark.webp" type="image/webp">
+          <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376" loading="lazy">
+        </picture>
+        <p>Luxury SUVs by quarterly subscription. Choose your tier, sign with your co-responsible party, drive.</p>
       </div>
-      <div class="foot-links">
+      <nav class="foot-links" aria-label="Footer">
         <div class="col">
-          <div class="t">Product</div>
-          <a href="#platform">Platform</a>
-          <a href="#engine">Engine &amp; APIs</a>
-          <a href="#testimonials">Testimonials</a>
+          <div class="t">Membership</div>
+          <a href="#how">How it works</a><br>
+          <a href="#membership">Tiers &amp; pricing</a><br>
+          <a href="#fleet">The vehicles</a><br>
+          <a href="#faq">FAQ</a><br>
+          <a href="/billing/manage.html">Manage billing</a>
+        </div>
+        <div class="col">
+          <div class="t">Legal</div>
+          <a href="/terms/">Terms of Use</a><br>
+          <a href="/refund-policy/">Refund &amp; Cancellation Policy</a><br>
+          <a href="/privacy/">Privacy Policy</a>
         </div>
         <div class="col">
           <div class="t">Company</div>
-          <a href="#contact">Contact</a>
-          <a href="mailto:contato@carprix.com.br">Email us</a>
+          <a href="#contact">Contact</a><br>
+          <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a>
         </div>
-      </div>
+      </nav>
     </div>
     <div class="foot-bottom">
       <span>© 2026 Carprix, LLC — Coral Gables, Florida, USA. All rights reserved.</span>
-      <span><b>Accurate.</b> Community. Pricing.</span>
+      <span class="tag"><b>choose.</b> sign. drive.</span>
     </div>
   </div>
 </footer>
 
-<script>
-// Header state
-const header = document.querySelector('.header');
-addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 24), {passive:true});
-
-// Mobile menu
-const toggle = document.getElementById('menuToggle');
-const links = document.getElementById('navLinks');
-toggle.addEventListener('click', () => {
-  const open = links.classList.toggle('open');
-  toggle.setAttribute('aria-expanded', open);
-  toggle.textContent = open ? '✕' : '☰';
-});
-links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  links.classList.remove('open'); toggle.textContent = '☰';
-}));
-
-// Duplicate marquee content for seamless loop
-const track = document.getElementById('marqueeTrack');
-track.innerHTML += track.innerHTML + track.innerHTML + track.innerHTML;
-
-// Reveal on scroll
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-}), {threshold:.15});
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-// Count-up stats
-const cio = new IntersectionObserver(es => es.forEach(e => {
-  if(!e.isIntersecting) return;
-  const el = e.target, end = +el.dataset.count, suf = el.dataset.suffix;
-  const t0 = performance.now(), dur = 1400;
-  const tick = t => {
-    const p = Math.min((t - t0)/dur, 1);
-    el.textContent = Math.round(end * (1-Math.pow(1-p,3))) + suf;
-    if (p < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-  cio.unobserve(el);
-}), {threshold:.6});
-document.querySelectorAll('.num[data-count]').forEach(el => cio.observe(el));
-</script>
+<script src="/js/site.js" defer></script>
 </body>
 </html>

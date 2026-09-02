@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment — Carprix</title>
+<meta name="description" content="Confirmation of your first-quarter payment to Carprix and the next steps of your membership: agreement, compliance review and handover.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#050604">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/carprix.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header header--solid">
+  <div class="container nav">
+    <a class="brand" href="/" aria-label="Carprix — home">
+      <picture>
+        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
+        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+      </picture>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact">Contact</a>
+      <a href="/billing/manage.html" id="navManage">Manage billing</a>
+    </nav>
+    <a class="btn btn-ghost" href="mailto:concierge@carprixapp.com?subject=Carprix%20payment">Help</a>
+    <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg class="ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="container container--narrow">
+
+    <!-- Stepper: choose ✓ · sign (payment + signatures) · drive — "sign" is completed only once the agreement is signed -->
+    <nav aria-label="Progress"><ol class="stepper">
+      <li class="is-done"><span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>choose<span class="visually-hidden"> — completed</span></span></li>
+      <li aria-current="step" id="st-sign"><span class="dot" aria-hidden="true">2</span><span>sign</span></li>
+      <li id="st-drive"><span class="dot" aria-hidden="true">3</span><span>drive</span></li>
+    </ol></nav>
+
+    <div class="page-head">
+      <div class="kicker" id="tierLabel">Membership</div>
+      <h1 id="title">Confirming your payment…</h1>
+      <p id="lead">One moment — we're checking with Stripe. This usually takes a few seconds.</p>
+      <!-- Guardian Monitoring (D16): shown when the application carries ?gm=1 or was remembered in this browser at application time -->
+      <p class="gm-note" id="gmNote" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.6 3.1 8.5 7.5 9.8 4.4-1.3 7.5-5.2 7.5-9.8V6L12 3z"/><path d="m9 12 2 2 4-4.5"/></svg><span><strong>Guardian Monitoring requested</strong> — we will confirm it with you before delivery.</span></p>
+    </div>
+
+    <div id="view" aria-live="polite">
+
+      <!-- Confirming (default / fallback while the webhook catches up) -->
+      <section class="card" id="v-confirming">
+        <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg></div>
+        <h2>Thanks — your checkout is complete.</h2>
+        <p>We're confirming the payment with Stripe. You'll also receive a receipt by e-mail from Stripe on behalf of Carprix, LLC.</p>
+        <p class="poll-note"><span class="spinner" aria-hidden="true"></span><span>Checking…</span></p>
+      </section>
+
+      <!-- Paid (card, or ACH cleared) -->
+      <section class="card" id="v-paid" hidden>
+        <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+        <h2>Your first quarter is paid.</h2>
+        <p>A receipt is on its way from Stripe on behalf of Carprix, LLC.</p>
+        <dl class="kv" id="paidKv"></dl>
+        <h3 class="card__sub" id="paidNextTitle">Next: sign the agreement</h3>
+        <p id="paidNextText">You'll receive the Subscription Agreement by e-mail from DocuSign on behalf of Carprix — you sign first, then your co-responsible party. Delivery follows the signatures and the compliance review, within 30 days, at the meeting point confirmed at signing.</p>
+        <dl class="overview" id="paidDetails" hidden></dl>
+        <div class="card__actions">
+          <a class="btn btn-lime" id="paidContinue" href="/billing/continue.html">Track your application <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
+      <!-- ACH processing -->
+      <section class="card" id="v-processing" hidden>
+        <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M5 6h14M7 14h10M9 18h6"/></svg></div>
+        <h2>Bank debit in progress.</h2>
+        <p>Your ACH payment has been submitted to your bank. Bank debits can take <strong>up to 4 business days</strong> to clear; we'll e-mail you as soon as it's confirmed. Nothing else is needed from you.</p>
+        <h3 class="card__sub">Next: sign the agreement</h3>
+        <p>Once the payment clears, the Subscription Agreement is sent from DocuSign — to you first, then to your co-responsible party. Delivery follows the signatures and the compliance review.</p>
+      </section>
+
+      <!-- Failed -->
+      <section class="card" id="v-failed" hidden>
+        <div class="state-icon state-icon--warn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg></div>
+        <h2>The payment didn't go through.</h2>
+        <p id="failedText">Your bank or card issuer declined the payment. Nothing was charged. You can try again with another card or bank account — your application stays open.</p>
+        <div class="card__actions">
+          <a class="btn btn-lime" id="retryPay" href="/billing/continue.html">Try again <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="mailto:concierge@carprixapp.com?subject=Carprix%20payment%20failed">Contact the concierge</a>
+        </div>
+      </section>
+
+      <!-- Not paid yet (landed here without a completed checkout) / other membership states -->
+      <section class="card" id="v-notpaid" hidden>
+        <div class="state-icon" id="np-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg></div>
+        <h2 id="np-title">We don't see a payment yet.</h2>
+        <p id="np-text">If you just paid, give it a minute and refresh this page. Otherwise, continue where you left off.</p>
+        <dl class="overview" id="npDetails" hidden></dl>
+        <div class="card__actions">
+          <a class="btn btn-lime" id="npInvoice" href="#" hidden target="_blank" rel="noopener">Pay the remaining balance <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn btn-lime" id="continueLink" href="/billing/continue.html">Continue your application <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
+      <!-- Session only (no application id in the link) -->
+      <section class="card" id="v-session" hidden>
+        <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+        <h2>Thanks — your checkout is complete.</h2>
+        <p>You'll receive a receipt by e-mail from Stripe on behalf of Carprix, LLC, then the Subscription Agreement to sign (you first, then your co-responsible party). Bank debits (ACH) can take up to 4 business days to clear.</p>
+      </section>
+
+      <!-- Missing -->
+      <section class="card" id="v-missing" hidden>
+        <div class="state-icon state-icon--warn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg></div>
+        <h2>This link is incomplete.</h2>
+        <p>Open the link from your confirmation e-mail, or manage your membership with your e-mail and application reference.</p>
+      </section>
+    </div>
+
+    <div class="card__actions" id="actions" hidden>
+      <a class="btn btn-lime" id="manageBtn" href="/billing/manage.html">Manage billing <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="/">Back to carprixapp.com</a>
+    </div>
+    <div class="notice notice--error mt-16" id="notice" hidden></div>
+    <p class="fine mt-20" id="refLine" hidden>Application reference: <span class="mono" id="refId"></span></p>
+    <p class="fine mt-12">Questions about your payment? <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a> · <a href="/refund-policy/">Refund &amp; Cancellation Policy</a></p>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-bottom foot-bottom--solo">
+      <span>© 2026 Carprix, LLC — Coral Gables, Florida, USA. · <a href="/terms/">Terms</a> · <a href="/refund-policy/">Refund &amp; Cancellation</a> · <a href="/privacy/">Privacy</a></span>
+      <span class="tag"><b>choose.</b> sign. drive.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/site.js" defer></script>
+<script src="/js/billing.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  document.addEventListener('DOMContentLoaded', function () {
+    var CB = window.CarprixBilling;
+    var $ = function (id) { return document.getElementById(id); };
+    var app = CB.ui.qs('app'), session = CB.ui.qs('session_id');
+    var views = ['v-confirming', 'v-paid', 'v-processing', 'v-failed', 'v-notpaid', 'v-session', 'v-missing'];
+    var TIER_LABEL = { alfa: 'ALFA', bravo: 'BRAVO', delta: 'DELTA' };
+    var METHOD = { card: 'Card', us_bank_account: 'US bank account (ACH)', link: 'Link' };
+    var KYC_LABEL = { pending: 'In review', approved: 'Approved', rejected: 'Needs attention — contact the concierge' };
+
+    function show(id) { views.forEach(function (v) { $(v).hidden = v !== id; }); }
+    function head(t, l) { $('title').textContent = t; $('lead').textContent = l || ''; document.title = t + ' — Carprix'; }
+    function actions(on) { $('actions').hidden = !on; }
+    function signDone() {
+      var sign = $('st-sign');
+      sign.className = 'is-done'; sign.removeAttribute('aria-current');
+      sign.innerHTML = '<span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>sign<span class="visually-hidden"> — completed</span></span>';
+      $('st-drive').setAttribute('aria-current', 'step');
+    }
+    function kv(el, rows) {
+      el.innerHTML = ''; var n = 0;
+      rows.forEach(function (r) {
+        if (!r || !r[1]) return;
+        var div = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+        dt.textContent = r[0]; dd.textContent = r[1]; div.appendChild(dt); div.appendChild(dd); el.appendChild(div); n += 1;
+      });
+      el.hidden = n === 0;
+    }
+    function when(o) { return o ? (o.scheduled_at || o.scheduled_for) : null; } // v0.3.1 name, v0.3 alias
+
+    var hasApp = CB.isAppId(app), hasSession = CB.isSessionId(session);
+    // Guardian Monitoring (D16): Stripe's success_url carries only app + session_id, so the request is read from ?gm=1 or from
+    // the per-application memory written by join/continue in this browser (until the API stores `guardian_monitoring`).
+    var gm = CB.gm.requested(hasApp ? app : null);
+    var PRE_DELIVERY = ['awaiting_payment', 'processing_payment', 'paid_awaiting_contract', 'contract_signed', 'kyc_review', 'delivery_scheduled'];
+    function gmNote(status) { $('gmNote').hidden = !(gm && (!status || PRE_DELIVERY.indexOf(status) !== -1)); }
+    gmNote('');
+    if (hasApp) {
+      $('refId').textContent = app; $('refLine').hidden = false;
+      $('manageBtn').href = $('navManage').href = CB.ui.pageUrl('/billing/manage.html', { app: app });
+      $('retryPay').href = $('continueLink').href = $('paidContinue').href = CB.ui.pageUrl('/billing/continue.html', { app: app });
+    }
+
+    if (!hasApp && !hasSession) { show('v-missing'); head('This link is incomplete.', ''); actions(true); return; }
+
+    if (!hasApp) {
+      // Only a Checkout Session id: we can't query status, but the portal accepts the session
+      show('v-session'); head('Thanks — checkout complete.', 'We\'re confirming your payment.'); actions(true);
+      $('manageBtn').addEventListener('click', function (ev) {
+        ev.preventDefault(); var btn = this; CB.ui.hideNotice($('notice'));
+        CB.ui.setBusy(btn, true, 'Opening the billing portal…');
+        CB.portal({ session_id: session }).then(function (d) { window.location.assign(d.url); })
+          .catch(function (err) { CB.ui.setBusy(btn, false); CB.ui.showNotice($('notice'), err.message, 'error'); });
+      });
+      return;
+    }
+
+    // Poll a few times while Stripe's webhook is projected (conservative fallback = "confirming")
+    var attempts = 0, MAX_ATTEMPTS = 12, timer = null;
+    function render(d) {
+      var tier = String(d.tier || '').toLowerCase();
+      $('tierLabel').textContent = TIER_LABEL[tier] ? ('Membership · ' + TIER_LABEL[tier]) : 'Membership';
+      var s = String(d.status || ''), p = d.payment || {}, ps = String(p.status || ''), c = d.contract || {};
+      var dl = d.delivery || {}, rt = d['return'] || {}, v = d.vehicle || {}, term = d.termination || {}, kyc = String(d.kyc_status || '');
+      gmNote(s); // "Guardian Monitoring requested" only while delivery is still ahead
+      var OTHER = {
+        past_due: ['A payment is past due.', 'Update your payment method in the billing portal to keep your membership active.'],
+        unpaid: ['A payment is outstanding.', 'Your membership is suspended until the outstanding quarter is paid. Update your payment method or contact the concierge.'],
+        canceling: ['Non-renewal registered.', 'Your membership ends at the end of the current paid period' + (d.cancel && d.cancel.effective_at ? ' (' + CB.ui.formatDate(d.cancel.effective_at) + ')' : '') + '. The vehicle is returned at the meeting point confirmed at signing.'],
+        termination_pending_payment: ['Early termination requested.', 'The remaining balance' + (typeof d.balance_due === 'number' ? ' of ' + CB.ui.formatUsd(d.balance_due) : '') + ' must be settled before the membership can end' + (term.due_at ? ' — invoice due ' + CB.ui.formatDate(term.due_at) : '') + '. Pay it with the invoice link below.'],
+        termination_pending_return: ['Balance settled — thank you.', 'Your remaining balance is paid. The membership ends when the vehicle is returned intact at the meeting point confirmed at signing.'],
+        terminated: ['Membership ended.', 'This membership has ended. Thank you for driving with Carprix.'],
+        refused: ['Application not accepted.', 'After review, Carprix could not accept this application. Any payment made is refunded in full to the original payment method within 10 business days.'],
+        canceled: ['Membership ended.', 'This membership has ended. Thank you for driving with Carprix.'],
+      };
+      // Membership states that are not part of the pay → sign → drive pipeline win over the generic "paid" fallback
+      if (OTHER[s]) {
+        signDone(); show('v-notpaid'); head(OTHER[s][0], ''); actions(s !== 'refused');
+        $('np-title').textContent = (s === 'terminated' || s === 'canceled' || s === 'refused') ? 'Details' : 'What happens next'; $('np-text').textContent = OTHER[s][1];
+        $('np-icon').className = 'state-icon' + ((s === 'past_due' || s === 'unpaid' || s === 'refused') ? ' state-icon--warn' : '');
+        var rows = [['Vehicle', v.model]];
+        if (s === 'termination_pending_payment') rows = rows.concat([['Remaining balance', CB.ui.formatUsd(d.balance_due)], ['Invoice due', CB.ui.formatDate(term.due_at)]]);
+        if (s === 'termination_pending_return' || s === 'canceling') rows = rows.concat([['Return meeting point', rt.meeting_point], ['Return scheduled', CB.ui.formatDateTime(when(rt))]]);
+        if (s === 'terminated' || s === 'canceled') rows = rows.concat([['Returned', CB.ui.formatDate(rt.returned_at || dl.returned_at)]]);
+        kv($('npDetails'), rows);
+        var inv = $('npInvoice');
+        if (s === 'termination_pending_payment' && CB.isInvoiceUrl(d.hosted_invoice_url)) { inv.href = d.hosted_invoice_url; inv.hidden = false; } else { inv.hidden = true; inv.removeAttribute('href'); }
+        $('continueLink').hidden = false; $('continueLink').innerHTML = 'Application status <span class="arr" aria-hidden="true">→</span>';
+        return true;
+      }
+      var PAID = ['paid_awaiting_contract', 'contract_signed', 'kyc_review', 'delivery_scheduled', 'active'];
+      if (PAID.indexOf(s) !== -1 || (ps === 'paid' && s !== 'processing_payment' && s !== 'awaiting_payment')) {
+        show('v-paid'); head('Payment received.', 'Next: sign the agreement.'); actions(true);
+        var kvEl = $('paidKv'); kvEl.innerHTML = '';
+        function row(k, val) { if (!val) return; var div = document.createElement('div'); var dt = document.createElement('dt'); dt.textContent = k; var dd = document.createElement('dd'); dd.textContent = val; div.appendChild(dt); div.appendChild(dd); kvEl.appendChild(div); }
+        row('Payment method', METHOD[p.method] || (p.method ? String(p.method) : ''));
+        row('Paid through', CB.ui.formatDate(p.paid_through));
+        row('Minimum commitment', '3 quarterly payments' + (typeof p.periods_paid === 'number' ? ' (' + p.periods_paid + ' of 3 paid)' : ''));
+        var details = [];
+        // The "next step" text follows the pipeline: sign → compliance review → delivery → active
+        if (s === 'paid_awaiting_contract') {
+          var next = c.next_signer || (!c.subscriber_signed ? 'subscriber' : 'cosigner');
+          $('paidNextTitle').textContent = 'Next: sign the agreement';
+          $('paidNextText').textContent = next === 'cosigner' ? 'Thanks for signing. Your co-responsible party has received the agreement by e-mail from DocuSign and signs next.'
+            : 'You\'ll receive the Subscription Agreement by e-mail from DocuSign on behalf of Carprix — you sign first, then your co-responsible party. Delivery follows the signatures and the compliance review, within 30 days, at the meeting point confirmed at signing.';
+        } else if (s === 'contract_signed' || s === 'kyc_review') {
+          signDone(); head('Payment received.', 'Agreement signed — compliance review in progress.');
+          $('paidNextTitle').textContent = 'Next: compliance review';
+          $('paidNextText').textContent = kyc === 'rejected' ? 'We could not complete the compliance review with the documents received. Our concierge will contact you about the next steps.'
+            : 'Both signatures are in. We\'re completing the compliance review — identity, driving licence and proof of insurance; then our concierge confirms your handover at the meeting point confirmed at signing.';
+          details = [['Compliance review', KYC_LABEL[kyc] || ''], ['Vehicle', v.model], ['Handover meeting point', dl.meeting_point]];
+        } else if (s === 'delivery_scheduled') {
+          signDone(); head('Payment received.', 'Cleared for delivery.');
+          $('paidNextTitle').textContent = 'Next: delivery';
+          $('paidNextText').textContent = when(dl) ? 'Your handover is scheduled for ' + CB.ui.formatDateTime(when(dl)) + (dl.meeting_point ? ' at ' + dl.meeting_point : '') + '.' : 'Our concierge will confirm the handover of your vehicle' + (dl.meeting_point ? ' at ' + dl.meeting_point : ' at the meeting point confirmed at signing') + '.';
+          details = [['Vehicle', v.model], ['Registered in', CB.ui.countryName(v.jurisdiction)], ['Handover meeting point', dl.meeting_point], ['Handover scheduled', CB.ui.formatDateTime(when(dl))]];
+        } else if (s === 'active') {
+          signDone(); head('Payment received.', 'Your membership is active.');
+          $('paidNextTitle').textContent = 'Your membership is active';
+          $('paidNextText').textContent = (dl.delivered_at ? 'Delivered on ' + CB.ui.formatDate(dl.delivered_at) + '. ' : '') + (dl.term_end ? 'Minimum term runs to ' + CB.ui.formatDate(dl.term_end) + '. ' : '') + 'Enjoy the drive.';
+          details = [['Vehicle', v.model], ['Registered in', CB.ui.countryName(v.jurisdiction)], ['Return meeting point', rt.meeting_point], ['Return scheduled', CB.ui.formatDateTime(when(rt))]];
+        }
+        kv($('paidDetails'), details);
+        return true;
+      }
+      if (s === 'processing_payment' || ps === 'processing' || ps === 'pending') { show('v-processing'); head('Bank debit in progress.', 'Up to 4 business days.'); actions(true); return true; }
+      if (ps === 'failed' || ps === 'action_required' || ps === 'requires_action') {
+        show('v-failed'); head('Payment not completed.', 'Nothing was charged.'); actions(false);
+        if (ps === 'action_required' || ps === 'requires_action') $('failedText').textContent = 'Your bank needs an extra verification step before the payment can complete. Try again and follow your bank\'s instructions — your application stays open.';
+        return true;
+      }
+      return false; // awaiting_payment → not paid yet (webhook may still be on its way)
+    }
+    function poll() {
+      attempts += 1;
+      CB.status(app).then(function (d) {
+        if (render(d)) return;
+        if (attempts >= MAX_ATTEMPTS) { show('v-notpaid'); head('We don\'t see a payment yet.', ''); actions(true); return; }
+        timer = setTimeout(poll, attempts < 6 ? 5000 : 15000);
+      }).catch(function (err) {
+        if (err.status === 404) { show('v-missing'); head('Application not found.', 'Check the link in your e-mail.'); actions(true); return; }
+        if (attempts >= MAX_ATTEMPTS) { show('v-session'); head('Thanks — checkout complete.', 'We\'ll confirm your payment by e-mail.'); actions(true); return; }
+        timer = setTimeout(poll, attempts < 6 ? 5000 : 15000);
+      });
+    }
+    poll();
+  });
+})();
+</script>
+</body>
+</html>

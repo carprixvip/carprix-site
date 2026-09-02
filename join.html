@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply — Carprix membership</title>
+<meta name="description" content="Start your Carprix membership: choose your tier, tell us who's signing, pay the first quarter, then sign the Subscription Agreement with your co-responsible party. Nothing is charged on this page.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://carprixapp.com/join.html">
+<meta name="theme-color" content="#050604">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/carprix.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header header--solid">
+  <div class="container nav">
+    <a class="brand" href="/" aria-label="Carprix — home">
+      <picture>
+        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
+        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+      </picture>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="/#membership">Membership</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="btn btn-ghost" href="/#membership">Back to tiers</a>
+    <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg class="ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="container container--narrow">
+
+    <nav aria-label="Progress"><ol class="stepper">
+      <li class="is-done"><span class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>choose<span class="visually-hidden"> — completed</span></span></li>
+      <li aria-current="step"><span class="dot" aria-hidden="true">2</span><span>sign</span></li>
+      <li><span class="dot" aria-hidden="true">3</span><span>drive</span></li>
+    </ol></nav>
+
+    <div class="page-head">
+      <div class="kicker">Membership application</div>
+      <h1>Let's get you started.</h1>
+      <p id="lead">Tell us who's signing. Next you pay the first quarter through Stripe Checkout; right after, the Subscription Agreement arrives by e-mail from DocuSign — you sign first, then your co-responsible party. <strong>Nothing is charged on this page.</strong></p>
+    </div>
+
+    <!-- Payments gate (D12 GO 4): shown when GET /health returns payments_enabled:false and the URL has no ?preview=1 -->
+    <div class="notice notice--info mb-20" id="prelaunchNotice" role="status" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg>
+      <div><strong>Payments open at launch.</strong> Founding applications are open now: register yours below and we will e-mail you as soon as checkout is available. Nothing is charged until then.</div>
+    </div>
+
+    <form id="applyForm" class="form" novalidate>
+      <div class="card">
+        <fieldset>
+          <legend id="tier-legend">Your tier <small>Billed quarterly in advance. Prices in USD, exclusive of taxes.</small></legend>
+          <div class="field" id="field-tier">
+            <div class="tier-picker" role="radiogroup" aria-labelledby="tier-legend" aria-describedby="err-tier">
+              <label class="tier-option">
+                <input type="radio" name="tier" value="alfa">
+                <span class="tier-option__box">
+                  <span class="tier-option__name">ALFA <span class="tier-option__price">USD 12,000 <span class="visually-hidden">per quarter</span></span></span>
+                  <span class="tier-option__vehicles">Audi Q3 · Land Rover Evoque</span>
+                </span>
+              </label>
+              <label class="tier-option">
+                <input type="radio" name="tier" value="bravo">
+                <span class="tier-option__box">
+                  <span class="tier-option__name">BRAVO <span class="tier-option__price">USD 18,000 <span class="visually-hidden">per quarter</span></span></span>
+                  <span class="tier-option__vehicles">Audi Q5 · BMW X4</span>
+                </span>
+              </label>
+              <label class="tier-option">
+                <input type="radio" name="tier" value="delta">
+                <span class="tier-option__box">
+                  <span class="tier-option__name">DELTA <span class="tier-option__price">USD 24,000 <span class="visually-hidden">per quarter</span></span></span>
+                  <span class="tier-option__vehicles">BMW X5 · Land Rover Defender</span>
+                </span>
+              </label>
+            </div>
+            <p class="field__error" id="err-tier">Choose a membership tier.</p>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="card">
+        <fieldset>
+          <legend>Member <small>The person whose name the membership is in and who pays the quarterly fee. Signs first.</small></legend>
+          <div class="fields">
+            <div class="field field--full">
+              <label class="field__label" for="s-name">Full legal name</label>
+              <input class="input" id="s-name" name="subscriber_name" type="text" autocomplete="name" required minlength="3" maxlength="120" aria-describedby="hint-s-name err-s-name">
+              <p class="field__hint" id="hint-s-name">As it appears on your government-issued ID.</p>
+              <p class="field__error" id="err-s-name">Enter your full name.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="s-email">E-mail</label>
+              <input class="input" id="s-email" name="subscriber_email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="hint-s-email err-s-email">
+              <p class="field__hint" id="hint-s-email">The agreement and receipts go here.</p>
+              <p class="field__error" id="err-s-email">Enter a valid e-mail address.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="s-phone">Mobile phone</label>
+              <input class="input" id="s-phone" name="subscriber_phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="32" placeholder="+1 305 000 0000" aria-describedby="hint-s-phone err-s-phone">
+              <p class="field__hint" id="hint-s-phone">Include the country code.</p>
+              <p class="field__error" id="err-s-phone">Enter a valid phone number with country code.</p>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="card">
+        <fieldset>
+          <legend>Co-responsible party (co-signer) <small>An adult who signs the agreement after you and is jointly and severally responsible for it with you.</small></legend>
+          <div class="fields">
+            <div class="field field--full">
+              <label class="field__label" for="c-name">Full legal name</label>
+              <input class="input" id="c-name" name="cosigner_name" type="text" autocomplete="off" required minlength="3" maxlength="120" aria-describedby="err-c-name">
+              <p class="field__error" id="err-c-name">Enter the co-responsible party's full name.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="c-email">E-mail</label>
+              <input class="input" id="c-email" name="cosigner_email" type="email" autocomplete="off" inputmode="email" required maxlength="254" aria-describedby="hint-c-email err-c-email">
+              <p class="field__hint" id="hint-c-email">Must be different from the member's e-mail.</p>
+              <p class="field__error" id="err-c-email">Enter a valid e-mail address, different from the member's.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="c-phone">Mobile phone <span class="opt">(optional)</span></label>
+              <input class="input" id="c-phone" name="cosigner_phone" type="tel" autocomplete="off" inputmode="tel" maxlength="32" placeholder="+1 305 000 0000" aria-describedby="err-c-phone">
+              <p class="field__error" id="err-c-phone">Enter a valid phone number with country code, or leave it empty.</p>
+            </div>
+            <!-- Guardian Monitoring (D16): optional request. Sent as `guardian_monitoring: true|false` in POST /apply (ignored by the
+                 API until Dev stores it) and carried to continue.html as ?gm=1 — see js/billing.js. Never required. -->
+            <div class="field field--full" id="field-gm">
+              <label class="check">
+                <input type="checkbox" id="gm" name="guardian_monitoring" value="1" aria-describedby="hint-gm">
+                <span><strong>Request Guardian Monitoring</strong> <span class="opt">(optional)</span> — the co-responsible party will be able to follow the vehicle's location and driving data through Carprix. Available after delivery; it can also be requested later.</span>
+              </label>
+              <p class="field__hint" id="hint-gm">Offered at the member's request only. How vehicle and telematics data are handled: <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="card">
+        <h2>Before you continue</h2>
+        <p>Please read — these terms apply to every Carprix membership.</p>
+        <div class="disclosure" id="key-terms">
+          <strong>Key terms.</strong> Your membership is <strong>billed quarterly in advance, in USD</strong>, and <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires <strong>settling the remaining balance</strong> and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. After payment you and your co-responsible party sign the Subscription Agreement (you first) and we complete the compliance review — identity, licence, insurance. Carprix may decline an application after review; the payment is then refunded in full. Delivery within 30 days at the handover meeting point confirmed at signing. <strong>Insurance is your responsibility.</strong> The member and the co-responsible party are <strong>jointly and severally responsible</strong> under the agreement.
+        </div>
+        <div class="field mt-18" id="field-terms">
+          <label class="check">
+            <input type="checkbox" id="accept" name="accept" required aria-describedby="key-terms err-terms">
+            <span>I have read and accept the <a href="/terms/" target="_blank" rel="noopener">Terms of Use</a>, the <a href="/refund-policy/" target="_blank" rel="noopener">Refund &amp; Cancellation Policy</a> and the <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>, and I understand the key terms above. <span class="visually-hidden">Terms version 2026-09.</span></span>
+          </label>
+          <p class="field__error" id="err-terms">You need to accept the Terms to continue.</p>
+        </div>
+        <input type="hidden" name="accepted_terms_version" value="2026-09">
+
+        <div class="notice notice--error" id="formNotice" hidden></div>
+
+        <div class="card__actions">
+          <button class="btn btn-lime" type="submit" id="submitBtn">Continue to payment <span class="arr" aria-hidden="true">→</span></button>
+        </div>
+        <p class="fine mt-16" id="finePrint">Nothing is charged on this page. We use these details to set up your payment and to prepare and send your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a></p>
+      </div>
+    </form>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-bottom foot-bottom--solo">
+      <span>© 2026 Carprix, LLC — Coral Gables, Florida, USA. · <a href="/terms/">Terms</a> · <a href="/refund-policy/">Refund &amp; Cancellation</a> · <a href="/privacy/">Privacy</a></span>
+      <span class="tag"><b>choose.</b> sign. drive.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/site.js" defer></script>
+<script src="/js/billing.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  document.addEventListener('DOMContentLoaded', function () {
+    var CB = window.CarprixBilling;
+    var form = document.getElementById('applyForm');
+    var notice = document.getElementById('formNotice');
+    var submitBtn = document.getElementById('submitBtn');
+    var TIERS = ['alfa', 'bravo', 'delta'];
+
+    // Pre-select the tier from ?tier=alfa|bravo|delta (anything else → nothing selected)
+    var wanted = String(CB.ui.qs('tier') || '').toLowerCase();
+    if (TIERS.indexOf(wanted) !== -1) {
+      var r = form.querySelector('input[name="tier"][value="' + wanted + '"]');
+      if (r) { r.checked = true; document.title = 'Apply — Carprix ' + wanted.toUpperCase(); }
+    }
+
+    // Payments gate (D12 GO 4): while the API runs on the Stripe sandbox, applications are registered
+    // but no payment is offered — unless ?preview=1 (internal testing). The real gate for the Pay button
+    // is continue.html (GET /status); a failed /health call leaves the normal copy in place.
+    if (!CB.preview) {
+      CB.health().then(function (h) {
+        if (CB.paymentsOpen(h)) return;
+        document.getElementById('prelaunchNotice').hidden = false;
+        document.getElementById('lead').innerHTML = 'Tell us who’s signing. <strong>Payments open at launch:</strong> your application is registered now and we e-mail you when checkout opens. You then pay the first quarter and the Subscription Agreement arrives from DocuSign — you sign first, then your co-responsible party. <strong>Nothing is charged on this page.</strong>';
+        submitBtn.innerHTML = 'Register my application <span class="arr" aria-hidden="true">→</span>';
+        document.getElementById('finePrint').innerHTML = 'Nothing is charged on this page. We keep these details to open your checkout at launch and to prepare your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a>';
+      }).catch(function () { /* keep the default copy; continue.html decides whether Pay is shown */ });
+    }
+
+    function field(id) { return document.getElementById(id); }
+    function wrap(el) { return el.closest('.field'); }
+    function setInvalid(el, invalid, message) {
+      var w = wrap(el);
+      if (!w) return;
+      w.classList.toggle('is-invalid', invalid);
+      if (el.type !== 'radio') el.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+      if (message) { var e = w.querySelector('.field__error'); if (e) e.textContent = message; }
+    }
+    function digits(v) { return String(v || '').replace(/\D/g, ''); }
+    function validPhone(v) { var d = digits(v); return d.length >= 8 && d.length <= 15 && /^\+?[\d\s().-]+$/.test(String(v).trim()); }
+    function validName(v) { var t = String(v || '').replace(/\s+/g, ' ').trim(); return t.length >= 2 && t.length <= 120; }
+
+    function validate() {
+      var firstBad = null;
+      function bad(el) { if (!firstBad) firstBad = el; }
+
+      var tier = form.querySelector('input[name="tier"]:checked');
+      var tierField = document.getElementById('field-tier');
+      tierField.classList.toggle('is-invalid', !tier);
+      if (!tier) bad(form.querySelector('input[name="tier"]'));
+
+      var sName = field('s-name'), sEmail = field('s-email'), sPhone = field('s-phone');
+      var cName = field('c-name'), cEmail = field('c-email'), cPhone = field('c-phone');
+
+      var ok;
+      ok = validName(sName.value); setInvalid(sName, !ok, 'Enter your full name.'); if (!ok) bad(sName);
+      ok = CB.isEmail(sEmail.value); setInvalid(sEmail, !ok); if (!ok) bad(sEmail);
+      ok = validPhone(sPhone.value); setInvalid(sPhone, !ok); if (!ok) bad(sPhone);
+      ok = validName(cName.value); setInvalid(cName, !ok, "Enter the co-responsible party's full name."); if (!ok) bad(cName);
+      ok = CB.isEmail(cEmail.value) && cEmail.value.trim().toLowerCase() !== sEmail.value.trim().toLowerCase();
+      setInvalid(cEmail, !ok); if (!ok) bad(cEmail);
+      ok = !cPhone.value.trim() || validPhone(cPhone.value); setInvalid(cPhone, !ok); if (!ok) bad(cPhone);
+
+      var accept = field('accept');
+      document.getElementById('field-terms').classList.toggle('is-invalid', !accept.checked);
+      if (!accept.checked) bad(accept);
+
+      return firstBad;
+    }
+
+    // Clear a field's error as soon as the user fixes it
+    form.addEventListener('input', function (e) {
+      var el = e.target;
+      if (el.closest('.field') && el.closest('.field').classList.contains('is-invalid')) {
+        if (el.name === 'tier') { document.getElementById('field-tier').classList.remove('is-invalid'); return; }
+        if (el.id === 'accept') { document.getElementById('field-terms').classList.toggle('is-invalid', !el.checked); return; }
+        setInvalid(el, false);
+      }
+    });
+    form.addEventListener('change', function (e) {
+      if (e.target.name === 'tier') document.getElementById('field-tier').classList.remove('is-invalid');
+      if (e.target.id === 'accept') document.getElementById('field-terms').classList.toggle('is-invalid', !e.target.checked);
+    });
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      CB.ui.hideNotice(notice);
+      var firstBad = validate();
+      if (firstBad) {
+        CB.ui.showNotice(notice, 'Please check the highlighted fields.', 'error');
+        firstBad.focus({ preventScroll: false });
+        return;
+      }
+      var gm = field('gm').checked; // Guardian Monitoring (D16) — optional
+      var payload = {
+        tier: form.querySelector('input[name="tier"]:checked').value,
+        subscriber: { name: field('s-name').value, email: field('s-email').value, phone: field('s-phone').value },
+        cosigner: { name: field('c-name').value, email: field('c-email').value, phone: field('c-phone').value },
+        accepted_terms_version: form.querySelector('input[name="accepted_terms_version"]').value,
+        guardian_monitoring: gm,
+      };
+      CB.ui.setBusy(submitBtn, true, 'Sending your application…');
+      form.setAttribute('aria-busy', 'true');
+      CB.apply(payload).then(function (data) {
+        var id = data && data.application_id;
+        if (!CB.isAppId(id)) throw new CB.ApiError('We received your application but could not open the next step. Please contact the concierge.', 0, 'bad_response');
+        if (gm) CB.gm.remember(id); // the API does not store the flag yet — keep it in this browser as well as in the URL
+        // Always build our own URL (never follow a URL from the response blindly); carries ?preview=1 / ?api= / gm=1 through
+        window.location.assign(CB.ui.pageUrl('/billing/continue.html', { app: id, gm: gm ? '1' : null }));
+      }).catch(function (err) {
+        form.removeAttribute('aria-busy');
+        CB.ui.setBusy(submitBtn, false);
+        var msg = err && err.message ? err.message : 'Something went wrong. Please try again.';
+        if (err && err.status === 400 && /tier/i.test(msg)) msg = 'That tier is not available right now. Choose another tier or contact the concierge.';
+        CB.ui.showNotice(notice, msg, 'error');
+        notice.focus && notice.setAttribute('tabindex', '-1');
+        notice.focus();
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

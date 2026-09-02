@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage billing — Carprix</title>
+<meta name="description" content="Update your payment method, download invoices, give notice of non-renewal or end your Carprix membership early.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://carprixapp.com/billing/manage.html">
+<meta name="theme-color" content="#050604">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/carprix.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="header header--solid">
+  <div class="container nav">
+    <a class="brand" href="/" aria-label="Carprix — home">
+      <picture>
+        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
+        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+      </picture>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="/#membership">Membership</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="btn btn-ghost" href="mailto:concierge@carprixapp.com?subject=Carprix%20billing">Help</a>
+    <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg class="ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="container container--narrow">
+
+    <div class="page-head">
+      <div class="kicker">Billing</div>
+      <h1>Manage your membership.</h1>
+      <p>Update your card or bank account, download invoices and receipts, give notice of non-renewal or end your membership early. Use the e-mail you applied with and your application reference (it's in your confirmation e-mail and in every receipt).</p>
+    </div>
+
+    <!-- Membership overview — only with ?app= in the URL; GET /status returns no personal data -->
+    <section class="card" id="overview" aria-labelledby="overview-title" aria-live="polite" hidden>
+      <h2 id="overview-title">Your membership</h2>
+      <p id="ov-lead">Loading the status of your application…</p>
+      <p><span class="badge" id="ov-badge" hidden></span></p>
+      <dl class="overview" id="ov-kv" hidden></dl>
+      <div class="card__actions" id="ov-actions" hidden>
+        <a class="btn btn-lime" id="ov-invoice" href="#" hidden target="_blank" rel="noopener">Pay the remaining balance <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" id="ov-continue" href="/billing/continue.html">Application status</a>
+      </div>
+    </section>
+
+    <!-- Billing portal -->
+    <section class="card" aria-labelledby="portal-title">
+      <h2 id="portal-title">Billing portal</h2>
+      <p>Opens your secure Stripe billing portal: payment method, invoices, receipts and billing details. Changing tier, non-renewal and early termination are not done in the portal — see below.</p>
+      <form id="portalForm" class="form" novalidate>
+        <div class="fields">
+          <div class="field" id="f-app">
+            <label class="field__label" for="app">Application reference</label>
+            <input class="input mono" id="app" name="application_id" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" required aria-describedby="hint-app err-app">
+            <p class="field__hint" id="hint-app">26 characters, e.g. <span class="mono">0h4x…</span></p>
+            <p class="field__error" id="err-app">Enter your 26-character application reference.</p>
+          </div>
+          <div class="field" id="f-email">
+            <label class="field__label" for="email">E-mail</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="hint-email err-email">
+            <p class="field__hint" id="hint-email">The member's e-mail used on the application.</p>
+            <p class="field__error" id="err-email">Enter a valid e-mail address.</p>
+          </div>
+        </div>
+        <div class="notice notice--error" id="portalNotice" hidden></div>
+        <div class="card__actions">
+          <button class="btn btn-lime" type="submit" id="portalBtn">Open billing portal <span class="arr" aria-hidden="true">→</span></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Non-renewal / early termination (POST /cancel-request) -->
+    <section class="card" aria-labelledby="cancel-title">
+      <h2 id="cancel-title">Stop renewal or end early</h2>
+      <p>Give notice of non-renewal at any time, online, right here — or request an early end to your membership.</p>
+      <div class="disclosure">
+        <strong>How it works.</strong>
+        <ul>
+          <li>Your membership has a <strong>minimum commitment of 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle.</li>
+          <li><strong>Non-renewal.</strong> Once the 3 payments are made, your notice takes effect at the <strong>end of the quarter already paid</strong> (received at least 7 days before that date); the membership does not renew after it. Before the 3 payments, a notice of non-renewal takes effect at the end of the minimum term.</li>
+          <li><strong>Ending early.</strong> Before the 3 payments, the membership can end only once the <strong>remaining balance</strong> of the minimum commitment — the quarterly payments still due — is settled. We issue an invoice with a secure payment link, due in 7 days; once it is paid, the vehicle is returned intact at the meeting point confirmed at signing and the membership ends on return.</li>
+          <li>Your membership stays active until the effective date. <strong>Quarterly fees are not refunded after delivery.</strong></li>
+          <li>We confirm the next steps on screen and by e-mail. Full details in the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a>.</li>
+        </ul>
+      </div>
+      <form id="cancelForm" class="form mt-22" novalidate>
+        <div class="fields">
+          <div class="field" id="f-capp">
+            <label class="field__label" for="capp">Application reference</label>
+            <input class="input mono" id="capp" name="application_id" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" required aria-describedby="err-capp">
+            <p class="field__error" id="err-capp">Enter your 26-character application reference.</p>
+          </div>
+          <div class="field" id="f-cemail">
+            <label class="field__label" for="cemail">E-mail</label>
+            <input class="input" id="cemail" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" aria-describedby="err-cemail">
+            <p class="field__error" id="err-cemail">Enter a valid e-mail address.</p>
+          </div>
+          <div class="field field--full">
+            <label class="field__label" for="reason">Reason <span class="opt">(optional)</span></label>
+            <textarea class="input" id="reason" name="reason" maxlength="1000" rows="3" aria-describedby="hint-reason"></textarea>
+            <p class="field__hint" id="hint-reason">Helps us improve. Not required.</p>
+          </div>
+          <div class="field field--full" id="f-confirm">
+            <label class="check">
+              <input type="checkbox" id="confirm" name="confirm" required aria-describedby="err-confirm">
+              <span>I understand that once 3 quarterly payments have been made my notice takes effect at the end of the quarter already paid; that before that the membership can end only by settling the remaining balance of the minimum commitment and returning the vehicle intact; and that quarterly fees are not refunded after delivery.</span>
+            </label>
+            <p class="field__error" id="err-confirm">Please confirm you understand when your request takes effect.</p>
+          </div>
+        </div>
+        <div class="notice" id="cancelNotice" hidden></div>
+        <div class="card__actions">
+          <button class="btn btn-ghost" type="submit" id="cancelBtn">Send my request</button>
+        </div>
+      </form>
+    </section>
+
+    <p class="fine mt-24">Prefer to talk to someone? <a href="mailto:concierge@carprixapp.com?subject=Carprix%20billing">concierge@carprixapp.com</a>. Requests by e-mail from the address used to sign the agreement are handled under the same rules. Billing questions: <a href="mailto:billing@carprixapp.com">billing@carprixapp.com</a>.</p>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="foot-bottom foot-bottom--solo">
+      <span>© 2026 Carprix, LLC — Coral Gables, Florida, USA. · <a href="/terms/">Terms</a> · <a href="/refund-policy/">Refund &amp; Cancellation</a> · <a href="/privacy/">Privacy</a></span>
+      <span class="tag"><b>choose.</b> sign. drive.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/site.js" defer></script>
+<script src="/js/billing.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  document.addEventListener('DOMContentLoaded', function () {
+    var CB = window.CarprixBilling;
+    var $ = function (id) { return document.getElementById(id); };
+    var app = String(CB.ui.qs('app') || '').trim().toLowerCase();
+    if (CB.isAppId(app)) { $('app').value = app; $('capp').value = app; }
+
+    // Keep the two reference/e-mail pairs in sync (one identity, two actions)
+    function mirror(a, b) { $(a).addEventListener('input', function () { $(b).value = $(a).value; }); }
+    mirror('app', 'capp'); mirror('capp', 'app'); mirror('email', 'cemail'); mirror('cemail', 'email');
+
+    var DEFAULT_ERR = {};
+    function mark(fieldId, invalid, message) {
+      var f = $(fieldId); f.classList.toggle('is-invalid', invalid);
+      var input = f.querySelector('.input, input'); if (input && input.type !== 'checkbox') input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+      var e = f.querySelector('.field__error'); if (e) { if (!DEFAULT_ERR[fieldId]) DEFAULT_ERR[fieldId] = e.textContent; e.textContent = (invalid && message) ? message : DEFAULT_ERR[fieldId]; }
+    }
+    function validId(v) { return CB.isAppId(String(v || '').trim().toLowerCase()); }
+    document.addEventListener('input', function (e) { var f = e.target.closest('.field'); if (f && f.classList.contains('is-invalid')) mark(f.id, false); });
+
+    // ---- Membership overview (GET /status — no personal data) ----
+    function kv(el, rows) {
+      el.innerHTML = ''; var n = 0;
+      rows.forEach(function (r) {
+        if (!r || !r[1]) return;
+        var div = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
+        dt.textContent = r[0]; dd.textContent = r[1]; div.appendChild(dt); div.appendChild(dd); el.appendChild(div); n += 1;
+      });
+      el.hidden = n === 0;
+    }
+    function when(o) { return o ? (o.scheduled_at || o.scheduled_for) : null; } // v0.3.1 name, v0.3 alias
+    var TIER_LABEL = { alfa: 'ALFA', bravo: 'BRAVO', delta: 'DELTA' };
+    var KYC_LABEL = { pending: 'In review', approved: 'Approved', rejected: 'Needs attention — contact the concierge' };
+    var STATUS = {
+      awaiting_payment: ['Awaiting first payment', '', 'Your application is registered; the first quarter has not been paid yet.'],
+      processing_payment: ['Bank payment processing', '', 'Your bank debit is clearing (up to 4 business days).'],
+      paid_awaiting_contract: ['Awaiting signatures', '', 'First quarter paid. The Subscription Agreement is signed by you first, then by your co-responsible party.'],
+      contract_signed: ['Compliance review', '', 'Agreement signed. We are completing the compliance review — identity, licence, insurance.'],
+      kyc_review: ['Compliance review', '', 'Agreement signed. Compliance review in progress — identity, licence, insurance.'],
+      delivery_scheduled: ['Cleared for delivery', 'ok', 'Our concierge confirms the handover at the meeting point confirmed at signing.'],
+      active: ['Active', 'ok', 'Your membership is active.'],
+      past_due: ['Payment past due', 'warn', 'Update your payment method in the billing portal to keep your membership active.'],
+      unpaid: ['Suspended — payment outstanding', 'warn', 'Your membership is suspended until the outstanding quarter is paid.'],
+      canceling: ['Non-renewal registered', '', 'Your membership ends at the end of the current paid period; the vehicle is returned at the meeting point confirmed at signing.'],
+      termination_pending_payment: ['Early termination — balance due', 'warn', 'The remaining balance of the minimum commitment must be settled before the membership can end.'],
+      termination_pending_return: ['Early termination — awaiting return', '', 'Balance settled. The membership ends when the vehicle is returned intact at the meeting point confirmed at signing.'],
+      terminated: ['Ended', '', 'This membership has ended.'],
+      refused: ['Not accepted', 'warn', 'After review, Carprix could not accept this application. Any payment made is refunded in full to the original payment method.'],
+      canceled: ['Ended', '', 'This membership has ended.'],
+    };
+    function loadOverview(id) {
+      var box = $('overview'); box.hidden = false;
+      $('ov-continue').href = CB.ui.pageUrl('/billing/continue.html', { app: id });
+      CB.status(id).then(function (d) {
+        var s = String(d.status || ''), st = STATUS[s] || ['Your membership', '', ''];
+        var v = d.vehicle || {}, dl = d.delivery || {}, rt = d['return'] || {}, term = d.termination || {}, cm = d.commitment || {};
+        var tier = TIER_LABEL[String(d.tier || '').toLowerCase()];
+        $('ov-lead').textContent = st[2] || '';
+        var badge = $('ov-badge'); badge.textContent = st[0]; badge.className = 'badge' + (st[1] ? ' badge--' + st[1] : ''); badge.hidden = false;
+        var rows = [
+          ['Tier', tier ? tier + (v.model ? '' : ' — see the vehicles on carprixapp.com') : ''],
+          ['Vehicle', v.model], ['Registered in', CB.ui.countryName(v.jurisdiction)],
+          ['Payments made', (function () { var n = typeof cm.periods_paid === 'number' ? cm.periods_paid : (d.payment && d.payment.periods_paid); return typeof n === 'number' && s !== 'awaiting_payment' ? n + ' of ' + (cm.min_payments || 3) + ' minimum' : ''; })()],
+          ['Paid through', CB.ui.formatDate(d.payment && d.payment.paid_through)],
+          ['Compliance review', (s === 'contract_signed' || s === 'kyc_review') ? (KYC_LABEL[d.kyc_status] || '') : ''],
+          ['Handover meeting point', dl.meeting_point], ['Handover scheduled', dl.delivered_at ? '' : CB.ui.formatDateTime(when(dl))],
+          ['Delivered', CB.ui.formatDate(dl.delivered_at)], ['Minimum term runs to', CB.ui.formatDate(dl.term_end)],
+          ['Membership ends', d.cancel && d.cancel.effective_at ? CB.ui.formatDate(d.cancel.effective_at) : ''],
+          ['Remaining balance', s === 'termination_pending_payment' ? CB.ui.formatUsd(d.balance_due) : ''], ['Invoice due', s === 'termination_pending_payment' ? CB.ui.formatDate(term.due_at) : ''],
+          ['Balance paid', CB.ui.formatDate(term.balance_paid_at)],
+          ['Return meeting point', rt.meeting_point], ['Return scheduled', rt.returned_at ? '' : CB.ui.formatDateTime(when(rt))], ['Returned', CB.ui.formatDate(rt.returned_at)],
+        ];
+        kv($('ov-kv'), rows);
+        var inv = $('ov-invoice');
+        if (s === 'termination_pending_payment' && CB.isInvoiceUrl(d.hosted_invoice_url)) { inv.href = d.hosted_invoice_url; inv.hidden = false; } else { inv.hidden = true; inv.removeAttribute('href'); }
+        $('ov-actions').hidden = false;
+      }).catch(function (err) {
+        $('ov-lead').textContent = err.status === 404 ? 'We could not find an application with this reference. Check the link in your e-mail.' : 'We could not load the status right now — the forms below still work.';
+      });
+    }
+    if (CB.isAppId(app)) loadOverview(app);
+
+    // ---- Billing portal ----
+    $('portalForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var notice = $('portalNotice'); CB.ui.hideNotice(notice);
+      var id = $('app').value.trim().toLowerCase(), email = $('email').value.trim();
+      var bad = null;
+      mark('f-app', !validId(id)); if (!validId(id)) bad = bad || $('app');
+      mark('f-email', !CB.isEmail(email)); if (!CB.isEmail(email)) bad = bad || $('email');
+      if (bad) { bad.focus(); return; }
+      var btn = $('portalBtn'); CB.ui.setBusy(btn, true, 'Opening the billing portal…');
+      CB.portal({ application_id: id, email: email }).then(function (d) { window.location.assign(d.url); })
+        .catch(function (err) {
+          CB.ui.setBusy(btn, false);
+          var msg = err.message;
+          if (err.status === 409) msg = 'There is no billing account for this application yet — the first quarter hasn\'t been paid. Continue your application to pay it.';
+          CB.ui.showNotice(notice, msg, 'error');
+          if (err.status === 409) { var a = document.createElement('a'); a.href = CB.ui.pageUrl('/billing/continue.html', { app: id }); a.textContent = 'Continue your application'; notice.lastElementChild.appendChild(document.createTextNode(' ')); notice.lastElementChild.appendChild(a); }
+          if (err.status === 403) { mark('f-email', true, 'This e-mail does not match the application.'); $('email').focus(); }
+          if (err.status === 404) { mark('f-app', true, 'We could not find an application with this reference.'); $('app').focus(); }
+        });
+    });
+
+    // ---- Non-renewal / early termination request ----
+    $('cancelForm').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var notice = $('cancelNotice'); CB.ui.hideNotice(notice);
+      var id = $('capp').value.trim().toLowerCase(), email = $('cemail').value.trim(), confirm = $('confirm').checked;
+      var bad = null;
+      mark('f-capp', !validId(id)); if (!validId(id)) bad = bad || $('capp');
+      mark('f-cemail', !CB.isEmail(email)); if (!CB.isEmail(email)) bad = bad || $('cemail');
+      mark('f-confirm', !confirm); if (!confirm) bad = bad || $('confirm');
+      if (bad) { bad.focus(); return; }
+      var btn = $('cancelBtn'); CB.ui.setBusy(btn, true, 'Sending your request…');
+      function invoiceLink(url, label) {
+        if (!CB.isInvoiceUrl(url)) return;
+        var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'btn btn-lime mt-16'; a.textContent = label || 'Pay the remaining balance';
+        notice.lastElementChild.appendChild(document.createElement('br')); notice.lastElementChild.appendChild(a);
+      }
+      CB.cancelRequest({ application_id: id, email: email, reason: $('reason').value }).then(function (d) {
+        CB.ui.setBusy(btn, false);
+        btn.disabled = true; btn.textContent = 'Request sent';
+        var msg;
+        if (d.mode === 'early_termination') {
+          var due = d.due_at ? CB.ui.formatDate(d.due_at) : '';
+          var bal = typeof d.balance_due === 'number' ? CB.ui.formatUsd(d.balance_due) : '';
+          msg = (d.message ? d.message + ' ' : '') + (bal ? 'Remaining balance: ' + bal + '. ' : '') + (due ? 'Invoice due: ' + due + '.' : '');
+          CB.ui.showNotice(notice, msg.trim(), 'info');
+          invoiceLink(d.hosted_invoice_url, 'Pay the remaining balance');
+        } else {
+          var when = CB.ui.formatDate(d.effective_at);
+          msg = (d.message ? d.message + ' ' : '') + (when ? ('Effective date: ' + when + '.') : '');
+          CB.ui.showNotice(notice, msg.trim() || 'Your notice of non-renewal is registered.', 'ok');
+        }
+        notice.setAttribute('tabindex', '-1'); notice.focus();
+        if (CB.isAppId(id)) loadOverview(id);
+      }).catch(function (err) {
+        CB.ui.setBusy(btn, false);
+        var msg = err.message;
+        var det = err.details || {};
+        var eff = det.effective_at ? CB.ui.formatDate(det.effective_at) : '';
+        if (err.status === 409) {
+          if (err.code === 'no_subscription') msg = 'There is no active membership for this application yet.';
+          else if (err.code === 'already_canceled') msg = 'This membership has already ended' + (eff ? ' (' + eff + ')' : '') + '.';
+          else if (err.code === 'already_requested' || err.code === 'already_scheduled') msg = 'A notice of non-renewal is already registered for this membership' + (eff ? ' — effective ' + eff : '') + '. No further action is needed.';
+          else if (err.code === 'termination_pending') msg = det.balance_paid ? 'Your early termination is in progress: the remaining balance is settled and the vehicle is returned at the meeting point confirmed at signing.'
+            : det.hosted_invoice_url ? 'An early termination is already in progress for this membership. Settle the remaining balance with the invoice link to complete it.'
+            : 'This membership is already scheduled to end. No further action is needed.';
+        }
+        CB.ui.showNotice(notice, msg, err.status === 409 ? 'info' : 'error');
+        if (err.code === 'termination_pending' && !det.balance_paid) invoiceLink(det.hosted_invoice_url, 'Pay the remaining balance');
+        if (err.status === 403) { mark('f-cemail', true, 'This e-mail does not match the application.'); $('cemail').focus(); }
+        if (err.status === 404) { mark('f-capp', true, 'We could not find an application with this reference.'); $('capp').focus(); }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
