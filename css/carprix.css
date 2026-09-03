@@ -389,7 +389,7 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 /* Footer */
 .footer { border-top: 1px solid var(--line); padding: 48px 0 32px; background: var(--bg-2); }
 .foot-grid { display: flex; justify-content: space-between; gap: 36px; flex-wrap: wrap; align-items: flex-start; }
-.foot-brand img, .foot-brand picture img { height: 44px; width: auto; margin-bottom: 16px; }
+.foot-brand img, .foot-brand picture img { height: 48px; width: auto; margin-bottom: 16px; }
 .foot-brand p { font-size: 13.5px; color: var(--muted); max-width: 36ch; }
 .foot-links { display: flex; gap: 48px; flex-wrap: wrap; }
 .foot-links .col .t { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
@@ -594,7 +594,7 @@ textarea.input { min-height: 96px; resize: vertical; }
   .pricing__grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 900px) {
-  .brand img, .brand picture img { height: 44px; }
+  .brand img, .brand picture img { height: 48px; }  /* vector mark: 48 px gives the inline detail room on 1× screens */
   .fleet__tiers { grid-template-columns: repeat(3, 1fr); }
   .cosign__grid { grid-template-columns: 1.1fr .9fr; gap: 64px; }
   .legal__grid { grid-template-columns: 220px 1fr; gap: 56px; }
