@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /billing/
+Sitemap: https://carprix.vip/sitemap.xml
