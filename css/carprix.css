@@ -189,7 +189,7 @@ h1 em, h2 em { font-style: normal; color: var(--lime); }
 .hero-card.has-photo .chip { padding: 10px 14px; }
 .hero-card.has-photo .chip .v { font-size: 15px; }
 .hero-visual { position: relative; }
-.hero-card { min-height: 380px; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+.hero-card { min-height: 380px; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; justify-content: flex-start; gap: 28px; }
 .hero-card__words { position: relative; z-index: 2; text-shadow: 0 2px 24px rgba(0, 0, 0, .55); font-family: var(--font-display); font-weight: 500; font-size: clamp(34px, 5vw, 62px); line-height: 1.02; letter-spacing: -.02em; }
 .hero-card__words span { display: block; color: var(--muted); }
 .hero-card__words span:first-child { color: var(--text); }
@@ -266,12 +266,32 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .pricing__foot { margin-top: 28px; font-size: 13.5px; line-height: 1.65; color: var(--muted); max-width: 90ch; }
 .pricing__foot strong { color: var(--text); font-weight: 600; }
 
-/* Fleet */
-.fleet__grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
-.car { min-height: 220px; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; }
-.car__tier { position: relative; z-index: 2; font-family: var(--font-display); font-size: 12px; letter-spacing: .22em; color: var(--lime); }
-.car__name { position: relative; z-index: 2; font-family: var(--font-display); font-weight: 600; font-size: 22px; margin-top: 6px; }
+/* Fleet — one column per tier (owner, 2026-09-03): the tier's two models stacked, captions under the images (never over
+   the vehicle), a lime rule + tier name on top of each column so the grouping reads at a glance. */
+.fleet__tiers { display: grid; gap: 18px; grid-template-columns: 1fr; }
+.tier-col {
+  position: relative; display: flex; flex-direction: column; gap: 12px; padding: 18px 14px 16px;
+  border-radius: var(--radius); border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012) 60%, transparent);
+}
+.tier-col::before { content: ""; position: absolute; top: -1px; left: 22px; right: 22px; height: 3px; border-radius: 0 0 3px 3px; background: var(--lime); box-shadow: 0 0 22px rgba(207, 254, 37, .45); }
+.tier-col__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; padding: 4px 6px 8px; }
+.tier-col__kicker { font-size: 11.5px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--lime); }
+.tier-col__name { font-family: var(--font-display); font-weight: 700; font-size: 28px; letter-spacing: .06em; line-height: 1; margin: 0; }
+.tier-col__price { margin-left: auto; font-size: 14px; color: var(--text); font-weight: 500; white-space: nowrap; }
+.tier-col__price small { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+.car { margin: 0; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); background: var(--bg-2); }
+.car__media { aspect-ratio: 16 / 10; overflow: hidden; background: #0F120A; }
+.car__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.car:hover .car__media img { transform: scale(1.03); }
+.car__name { padding: 12px 14px 13px; font-family: var(--font-display); font-weight: 600; font-size: 18px; letter-spacing: -.01em; border-top: 1px solid var(--line); }
+.tier-col__link { align-self: flex-start; margin: 4px 6px 0; font-weight: 600; font-size: 14px; color: var(--lime); text-decoration: none; }
+.tier-col__link .arr { display: inline-block; transition: transform .2s ease; }
+.tier-col__link:hover .arr { transform: translateX(4px); }
 .fleet__note { margin-top: 20px; font-size: 13.5px; color: var(--muted); }
+/* Hero caption under the rendering (text never over the vehicle) */
+.hero-visual__caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin: 12px 6px 0; font-size: 12.5px; color: var(--muted); }
+.hero-visual__caption span:first-child { color: var(--text); font-weight: 500; }
 
 /* Co-responsible party (co-signer) */
 .cosign__grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: start; }
@@ -538,7 +558,6 @@ textarea.input { min-height: 96px; resize: vertical; }
 @media (min-width: 640px) {
   .fields { grid-template-columns: 1fr 1fr; }
   .fields .field--full { grid-column: 1 / -1; }
-  .fleet__grid { grid-template-columns: repeat(2, 1fr); }
   .tier-picker { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 760px) {
@@ -547,7 +566,7 @@ textarea.input { min-height: 96px; resize: vertical; }
 }
 @media (min-width: 900px) {
   .brand img, .brand picture img { height: 40px; }
-  .fleet__grid { grid-template-columns: repeat(3, 1fr); }
+  .fleet__tiers { grid-template-columns: repeat(3, 1fr); }
   .cosign__grid { grid-template-columns: 1.1fr .9fr; gap: 64px; }
   .legal__grid { grid-template-columns: 220px 1fr; gap: 56px; }
   .legal__toc { display: block; }
