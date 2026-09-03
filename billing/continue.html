@@ -78,6 +78,7 @@
         <div class="disclosure" id="pay-terms">
           <strong>Before you pay.</strong> The first quarter (<span id="payAmount">the quarterly fee</span>, exclusive of taxes) is charged now, then every 3 months from delivery; your membership <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires settling the remaining balance and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
         </div>
+        <div class="notice notice--info" id="sandboxNotice" role="status" hidden></div>
         <div class="notice notice--error" id="payNotice" hidden></div>
         <div class="card__actions">
           <button class="btn btn-lime" type="button" id="payBtn" aria-describedby="pay-terms">Pay first quarter <span class="arr" aria-hidden="true">→</span></button>
@@ -307,7 +308,11 @@
 
       if (s === 'awaiting_payment') {
         if (!open) { show('v-prelaunch'); head('Thanks — your application is in.', 'Payments open at launch — we will e-mail you when checkout is available.'); return; }
-        if (d.checkout_available) { show('v-pay'); head('Thanks — your application is in.', 'Step 1: pay the first quarter. Step 2: you and your co-responsible party sign.'); }
+        if (d.checkout_available) {
+          show('v-pay'); head('Thanks — your application is in.', 'Step 1: pay the first quarter. Step 2: you and your co-responsible party sign.');
+          // Sandbox payments (v0.3.7, D22): GET /health tells whether Checkout runs on Stripe test keys → notice above Pay
+          CB.health().then(function (h) { CB.ui.renderSandboxNotice($('sandboxNotice'), h); }).catch(function () {});
+        }
         else { show('v-pay-wait'); head('Your application is in.', 'Payment is not available right now.'); }
         return;
       }

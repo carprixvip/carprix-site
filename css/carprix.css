@@ -391,6 +391,8 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .notice--ok { border-color: rgba(207, 254, 37, .45); background: rgba(207, 254, 37, .07); }
 .notice--ok svg { color: var(--lime); }
 .notice--info svg { color: var(--lime); }
+.notice--sandbox { border-color: rgba(255, 196, 87, .55); background: rgba(255, 196, 87, .08); }
+.notice--sandbox svg { color: #FFC457; }
 .notice a { color: var(--lime); text-decoration: underline; text-underline-offset: 3px; }
 .notice a.btn { text-decoration: none; }
 .notice a.btn-lime { color: var(--on-lime); }

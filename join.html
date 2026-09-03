@@ -55,6 +55,8 @@
       <p id="lead">Tell us who's signing. Next you pay the first quarter through Stripe Checkout; right after, the Subscription Agreement arrives by e-mail from DocuSign — you sign first, then your co-responsible party. <strong>Nothing is charged on this page.</strong></p>
     </div>
 
+    <!-- Sandbox payments (v0.3.7, D22): shown when GET /health says the gate is open on Stripe test keys -->
+    <div class="notice notice--info mb-20" id="sandboxNotice" role="status" hidden></div>
     <!-- Payments gate (D12 GO 4): shown when GET /health returns payments_enabled:false and the URL has no ?preview=1 -->
     <div class="notice notice--info mb-20" id="prelaunchNotice" role="status" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg>
@@ -212,7 +214,7 @@
     // is continue.html (GET /status); a failed /health call leaves the normal copy in place.
     if (!CB.preview) {
       CB.health().then(function (h) {
-        if (CB.paymentsOpen(h)) return;
+        if (CB.paymentsOpen(h)) { CB.ui.renderSandboxNotice(document.getElementById('sandboxNotice'), h); return; }
         document.getElementById('prelaunchNotice').hidden = false;
         document.getElementById('lead').innerHTML = 'Tell us who’s signing. <strong>Payments open at launch:</strong> your application is registered now and we e-mail you when checkout opens. You then pay the first quarter and the Subscription Agreement arrives from DocuSign — you sign first, then your co-responsible party. <strong>Nothing is charged on this page.</strong>';
         submitBtn.innerHTML = 'Register my application <span class="arr" aria-hidden="true">→</span>';

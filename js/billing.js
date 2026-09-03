@@ -142,6 +142,29 @@
     return !(data && data.payments_enabled === false);
   }
 
+  /**
+   * Sandbox payments (v0.3.7, D22): true when GET /health says the gate is open on Stripe TEST keys
+   * (`sandbox_payments`), or — older API — when `stripe_mode` is "test" while payments are enabled. The pages then
+   * show a "sandbox — no real charges" notice next to the Pay button; Checkout itself carries Stripe's TEST MODE banner.
+   */
+  function sandboxPayments(health) {
+    if (!health) return false;
+    if (typeof health.sandbox_payments === 'boolean') return health.sandbox_payments;
+    return health.stripe_mode === 'test' && health.payments_enabled === true;
+  }
+
+  var SANDBOX_NOTICE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>'
+    + '<div><strong>Sandbox.</strong> Checkout runs in Stripe <strong>test mode</strong> while we prove the journey: <strong>no real charges are made</strong> and only Stripe test cards are accepted (for example 4242 4242 4242 4242, any future date, any CVC). Live payments open at launch.</div>';
+
+  /** Show/hide the sandbox notice element (`.notice`) according to GET /health. Returns the flag. */
+  function renderSandboxNotice(el, health) {
+    var on = sandboxPayments(health);
+    if (!el) return on;
+    if (on) { el.innerHTML = SANDBOX_NOTICE; el.classList.add('notice--sandbox'); }
+    el.hidden = !on;
+    return on;
+  }
+
   function apply(payload) {
     return Promise.resolve().then(function () {
       var p = payload || {};
@@ -337,6 +360,7 @@
     cancelRequest: cancelRequest,
     guardianMonitoring: guardianMonitoring,
     paymentsOpen: paymentsOpen,
+    sandboxPayments: sandboxPayments,
     preview: PREVIEW,
     api: API,
     ApiError: ApiError,
@@ -345,6 +369,6 @@
     isEmail: function (v) { return EMAIL_RE.test(String(v || '').trim()); },
     isInvoiceUrl: isInvoiceUrl,
     gm: { view: gmView, label: gmLabel, describe: gmDescribe },
-    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, renderGmNote: renderGmNote, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
+    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, renderGmNote: renderGmNote, renderSandboxNotice: renderSandboxNotice, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
   };
 })();
