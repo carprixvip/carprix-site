@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/carprix.css">
+<link rel="stylesheet" href="/css/carprix.css?v=6">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -24,8 +24,10 @@
   <div class="container nav">
     <a class="brand" href="/" aria-label="Carprix — home">
       <picture>
-        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
-        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+        <!-- Vector wordmark (2026-09-03): the full lock-up (inline letters) on ≥ 2 dppx screens; the solid variant with a
+             bolder tagline on 1× screens, where the 3 px inline and the thin tagline blur below ~60 px. Same viewBox. -->
+        <source srcset="/assets/logo-wordmark.svg?v=6" type="image/svg+xml" media="(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx)">
+        <img src="/assets/logo-wordmark-solid.svg?v=6" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
       </picture>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
@@ -103,7 +105,7 @@
 
       <section id="fees" aria-labelledby="h-fees">
         <h2 id="h-fees">5. Fees, billing and automatic renewal</h2>
-        <p>5.1 <strong>Clear and conspicuous disclosure.</strong> Membership fees are charged <strong>quarterly, in advance, in USD</strong>: ALFA USD 12,000; BRAVO USD 18,000; DELTA USD 24,000 per Quarterly Period, exclusive of taxes. The membership has a <strong>Minimum Term of three Quarterly Periods (nine months)</strong> counted from the Delivery Date — a total of three Quarterly Fees. After the Minimum Term the membership <strong>renews automatically</strong> for further Quarterly Periods at the then-current fee until you give notice of non-renewal under the Refund and Cancellation Policy. Carprix e-mails a reminder at least seven (7) days before each renewal charge. <strong>Prepaid Term Option (launch offer):</strong> while offered, you may instead pay the three Quarterly Fees of the Minimum Term in one payment with a launch discount of twenty percent (20%) — ALFA USD 28,800; BRAVO USD 43,200; DELTA USD 57,600, exclusive of taxes; that membership has no further fees, <strong>does not renew</strong> and ends nine months after the Delivery Date; the prepaid amount is not refunded after delivery (Section 7.5 of the Agreement; Refund and Cancellation Policy Section 2.6). Carprix may withdraw the launch offer at any time for new applications.</p>
+        <p>5.1 <strong>Clear and conspicuous disclosure.</strong> Membership fees are charged <strong>quarterly, in advance, in USD</strong>: ALFA USD 12,000; BRAVO USD 18,000; DELTA USD 24,000 per Quarterly Period, exclusive of taxes. The membership has a <strong>Minimum Term of three Quarterly Periods (nine months)</strong> counted from the Delivery Date — a total of three Quarterly Fees. After the Minimum Term the membership <strong>renews automatically</strong> for further Quarterly Periods at the then-current fee until you give notice of non-renewal under the Refund and Cancellation Policy. Carprix e-mails a reminder at least seven (7) days before each renewal charge. <strong>Prepaid Term Option (launch offer):</strong> while offered, you may instead pay the three Quarterly Fees of the Minimum Term in one payment with a launch discount of fifteen percent (15%) — ALFA USD 30,600; BRAVO USD 45,900; DELTA USD 61,200, exclusive of taxes; that membership has no further fees, <strong>does not renew</strong> and ends nine months after the Delivery Date; the prepaid amount is not refunded after delivery (Section 7.5 of the Agreement; Refund and Cancellation Policy Section 2.6). Carprix may withdraw the launch offer at any time for new applications.</p>
         <p>5.2 The first Quarterly Fee is paid at Checkout and is held as a Reservation Deposit until delivery. The second and third Quarterly Fees are charged three and six months after the Delivery Date, and renewal fees at the start of each renewal Quarterly Period, to the payment method you register.</p>
         <p>5.3 All amounts are stated, charged and refunded in USD only; no amount is converted into or determined by reference to another currency. Fees exclude taxes, duties and governmental charges, which are added where Carprix is required to collect them or are borne by you where they arise in the Vehicle Jurisdiction. Exchange-rate differences and bank or card fees charged by your issuer or bank are yours.</p>
         <p>5.4 Other charges that may arise under the Agreement — Carprix's Intervention Fee of USD 100 per hour plus costs, excess mileage, fines and tolls, damage beyond fair wear and tear, total loss and diminution in value measured by the Kelley Blue Book (Florida) value in USD of the vehicle or, if it is not listed, of the Kelley Blue Book reference model named in the Vehicle Schedule, late return and late payment — are described in the Agreement and its Disclosure Schedule, which you review before signing.</p>

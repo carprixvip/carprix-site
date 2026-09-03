@@ -129,8 +129,11 @@ ul[role="list"], ol[role="list"] { list-style: none; }
 
 /* ---------- Hero ---------- */
 .hero {
-  min-height: 100svh; display: flex; align-items: center; overflow: clip;
-  padding: calc(var(--header-h) + 64px) 0 72px;
+  display: flex; align-items: center; overflow: clip;
+  /* Owner, 2026-09-03: "o espaço entre o topo e o início do conteúdo está muito grande, reduza pela metade" — the hero no
+     longer stretches to 100svh (which centred the content and left ~300 px above it on a desktop screen); the content
+     starts right under the header with the same rhythm as the other sections. */
+  padding: calc(var(--header-h) + clamp(40px, 5vw, 64px)) 0 clamp(48px, 5.5vw, 72px);
   background:
     radial-gradient(1000px 620px at 82% 30%, rgba(207, 254, 37, .13), transparent 60%),
     radial-gradient(760px 500px at 8% 82%, rgba(14, 40, 75, .55), transparent 65%),
@@ -217,10 +220,20 @@ h1 em, h2 em { font-style: normal; color: var(--lime); }
 @keyframes scroll { to { transform: translateX(-50%); } }
 
 /* ---------- Sections ---------- */
-.section { padding: clamp(72px, 9vw, 110px) 0; }
+/* Uniform vertical rhythm (owner, 2026-09-03): every section — hero, how, membership, vehicles, co-responsible, FAQ, CTA —
+   uses the same block padding (--section-y), so the gaps between blocks are equal top and bottom. */
+:root { --section-y: clamp(52px, 6vw, 80px); }
+.section { padding: var(--section-y) 0; }
 .section--alt { background: var(--bg-2); border-block: 1px solid var(--line); }
-.sec-head { max-width: 720px; margin-bottom: clamp(36px, 5vw, 64px); }
+.sec-head { max-width: 720px; margin-bottom: clamp(28px, 3.5vw, 44px); }
 .sec-head.center { margin-inline: auto; text-align: center; }
+/* Section head aligned with the grid below it (owner: explanatory texts "amontoados na esquerda" → follow the frames):
+   full container width; on wide screens the paragraph runs in two columns whose outer edges meet the grid's edges. */
+.sec-head--wide { max-width: none; }
+.sec-head--wide h2 { max-width: 20ch; }
+@media (min-width: 900px) {
+  .sec-head--wide p { column-count: 2; column-gap: 40px; max-width: none; }
+}
 .kicker { font-size: 12.5px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; }
 h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .sec-head p { margin-top: 18px; color: var(--muted); font-size: 17px; }
@@ -263,7 +276,8 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .plan__features li::after { content: ""; position: absolute; left: 4px; top: calc(.45em + 3px); width: 5px; height: 7px; border: solid var(--lime); border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .plan__cta { margin-top: auto; }
 .plan--highlight .plan__cta { background: var(--lime); color: var(--on-lime); border-color: var(--lime); }
-.pricing__foot { margin-top: 28px; font-size: 13.5px; line-height: 1.65; color: var(--muted); max-width: 90ch; }
+.pricing__foot { margin-top: 28px; font-size: 13.5px; line-height: 1.65; color: var(--muted); max-width: none; }
+@media (min-width: 900px) { .pricing__foot { column-count: 2; column-gap: 40px; } }  /* aligned with the three cards above */
 .pricing__foot strong { color: var(--text); font-weight: 600; }
 
 /* Launch offer (D24) — block inside the pricing cards + the join form's billing option */
@@ -302,7 +316,7 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .tier-col__link { align-self: flex-start; margin: 4px 6px 0; font-weight: 600; font-size: 14px; color: var(--lime); text-decoration: none; }
 .tier-col__link .arr { display: inline-block; transition: transform .2s ease; }
 .tier-col__link:hover .arr { transform: translateX(4px); }
-.fleet__note { margin-top: 20px; font-size: 13.5px; color: var(--muted); }
+.fleet__note { margin-top: 20px; font-size: 13.5px; color: var(--muted); max-width: none; }
 /* Hero caption under the rendering (text never over the vehicle) */
 .hero-visual__caption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin: 12px 6px 0; font-size: 12.5px; color: var(--muted); }
 .hero-visual__caption span:first-child { color: var(--text); font-weight: 500; }
@@ -356,7 +370,7 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .faq .faq__a p + p { margin-top: 10px; }
 
 /* Contact / CTA */
-.cta { padding: 0 0 clamp(72px, 9vw, 120px); }
+.cta { padding: 0 0 var(--section-y); }
 .cta-box {
   border-radius: 28px; padding: clamp(40px, 7vw, 88px) clamp(24px, 6vw, 80px);
   background:
@@ -373,15 +387,15 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .cta-box .contact-lines { position: relative; display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 28px; font-size: 15px; font-weight: 500; color: rgba(11, 13, 6, .82); }
 
 /* Footer */
-.footer { border-top: 1px solid var(--line); padding: 56px 0 40px; background: var(--bg-2); }
+.footer { border-top: 1px solid var(--line); padding: 48px 0 32px; background: var(--bg-2); }
 .foot-grid { display: flex; justify-content: space-between; gap: 36px; flex-wrap: wrap; align-items: flex-start; }
-.foot-brand img, .foot-brand picture img { height: 40px; width: auto; margin-bottom: 16px; }
+.foot-brand img, .foot-brand picture img { height: 44px; width: auto; margin-bottom: 16px; }
 .foot-brand p { font-size: 13.5px; color: var(--muted); max-width: 36ch; }
 .foot-links { display: flex; gap: 48px; flex-wrap: wrap; }
 .foot-links .col .t { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .foot-links .col a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14.5px; color: var(--text); opacity: .85; transition: color .2s; }
 .foot-links .col a:hover { color: var(--lime); opacity: 1; }
-.foot-bottom { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.foot-bottom { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
 .foot-bottom b { color: var(--lime); font-weight: 600; }
 .foot-bottom a { display: inline-block; padding: 12px 4px; margin: -12px -4px; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 .foot-bottom a:hover { color: var(--lime); }
@@ -438,6 +452,7 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
   background: rgba(207, 254, 37, .05); padding: 14px 16px; font-size: 14px; line-height: 1.6; color: var(--text);
 }
 .disclosure strong { font-weight: 600; }
+.disclosure--justify { text-align: justify; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
 .disclosure ul { margin: 8px 0 0 18px; }
 .disclosure li + li { margin-top: 4px; }
 
@@ -447,7 +462,7 @@ fieldset { border: 0; min-width: 0; display: grid; gap: 16px; }
 legend { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin-bottom: 14px; color: var(--text); }
 legend small { display: block; font-family: var(--font-text); font-weight: 400; font-size: 14px; color: var(--muted); margin-top: 4px; }
 .fields { display: grid; gap: 16px; grid-template-columns: 1fr; }
-.field { display: grid; gap: 6px; }
+.field { display: grid; gap: 6px; align-content: start; }  /* inputs keep their height and top alignment next to a taller field */
 .field__label { font-weight: 500; font-size: 14.5px; }
 .field__label .opt { color: var(--muted); font-weight: 400; }
 .field__hint { font-size: 13px; color: var(--muted); }
@@ -579,7 +594,7 @@ textarea.input { min-height: 96px; resize: vertical; }
   .pricing__grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 900px) {
-  .brand img, .brand picture img { height: 40px; }
+  .brand img, .brand picture img { height: 44px; }
   .fleet__tiers { grid-template-columns: repeat(3, 1fr); }
   .cosign__grid { grid-template-columns: 1.1fr .9fr; gap: 64px; }
   .legal__grid { grid-template-columns: 220px 1fr; gap: 56px; }

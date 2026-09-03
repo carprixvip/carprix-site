@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/carprix.css">
+<link rel="stylesheet" href="/css/carprix.css?v=6">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -22,8 +22,10 @@
   <div class="container nav">
     <a class="brand" href="/" aria-label="Carprix — home">
       <picture>
-        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
-        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+        <!-- Vector wordmark (2026-09-03): the full lock-up (inline letters) on ≥ 2 dppx screens; the solid variant with a
+             bolder tagline on 1× screens, where the 3 px inline and the thin tagline blur below ~60 px. Same viewBox. -->
+        <source srcset="/assets/logo-wordmark.svg?v=6" type="image/svg+xml" media="(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx)">
+        <img src="/assets/logo-wordmark-solid.svg?v=6" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
       </picture>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">

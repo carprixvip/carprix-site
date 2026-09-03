@@ -168,7 +168,7 @@
   /**
    * Launch offer (v0.3.8, D24): GET /health.launch_offer = { enabled, discount_pct, quarters, term_months, renews:false,
    * prices: { alfa: { amount, full_amount, savings, quarterly_amount } … } } — the whole 9-month term prepaid in ONE payment
-   * with 20 % off, no automatic renewal, alongside quarterly billing. Absent/closed → null (older API or offer closed).
+   * with 15 % off (20 % in v0.3.8), no automatic renewal, alongside quarterly billing. Absent/closed → null (older API or offer closed).
    */
   function launchOffer(health) {
     var o = health && health.launch_offer;
@@ -219,7 +219,7 @@
       if (c.phone) body.cosigner.phone = String(c.phone).trim();
       // D16 — optional Guardian Monitoring request (v0.3.3 persists it). Only a real boolean: the API rejects "true"/1 with 400.
       if (typeof p.guardian_monitoring === 'boolean') body.guardian_monitoring = p.guardian_monitoring;
-      // D24 (v0.3.8) — billing mode: 'quarterly' (default) or 'launch_prepay' (whole term in one payment, 20 % off) while the offer is open.
+      // D24 (v0.3.8; 15 % since v0.3.9) — billing mode: 'quarterly' (default) or 'launch_prepay' (whole term in one payment, 15 % off) while the offer is open.
       if (p.billing === 'launch_prepay' || p.billing === 'quarterly') body.billing = p.billing;
       return request('POST', '/apply', body);
     });

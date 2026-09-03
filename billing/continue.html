@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/carprix.css">
+<link rel="stylesheet" href="/css/carprix.css?v=6">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -22,8 +22,10 @@
   <div class="container nav">
     <a class="brand" href="/" aria-label="Carprix — home">
       <picture>
-        <source srcset="/assets/logo-wordmark.webp" type="image/webp">
-        <img src="/assets/logo-wordmark.png" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
+        <!-- Vector wordmark (2026-09-03): the full lock-up (inline letters) on ≥ 2 dppx screens; the solid variant with a
+             bolder tagline on 1× screens, where the 3 px inline and the thin tagline blur below ~60 px. Same viewBox. -->
+        <source srcset="/assets/logo-wordmark.svg?v=6" type="image/svg+xml" media="(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx)">
+        <img src="/assets/logo-wordmark-solid.svg?v=6" alt="CARPRIX — choose. sign. drive." width="1756" height="376">
       </picture>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
@@ -75,12 +77,12 @@
         <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div>
         <h2 id="payTitle">Next: pay the first quarter.</h2>
         <p>You'll be taken to Stripe Checkout (card or US bank account, in USD). Right after the payment, the Subscription Agreement is sent from DocuSign — to you first, then to your co-responsible party.</p>
-        <div class="disclosure" id="pay-terms">
+        <div class="disclosure disclosure--justify" id="pay-terms">
           <strong>Before you pay.</strong> The first quarter (<span id="payAmount">the quarterly fee</span>, exclusive of taxes) is charged now, then every 3 months from delivery; your membership <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires settling the remaining balance and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
         </div>
         <!-- D24 (v0.3.8): prepaid launch offer — shown instead of the quarterly disclosure when the application chose it -->
-        <div class="disclosure" id="pay-terms-prepaid" hidden>
-          <strong>Before you pay — launch offer.</strong> One payment of <span id="payAmountPrepaid">the prepaid amount</span> (exclusive of taxes) covers the <strong>full 9-month term</strong>, counted from the delivery of your vehicle, with the <strong>20% launch discount</strong> already applied. <strong>No further payments and no automatic renewal</strong>: the membership ends 9 months after delivery, when the vehicle is returned. The prepaid amount is <strong>not refunded after delivery</strong>; returning the vehicle earlier does not shorten the amount paid. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
+        <div class="disclosure disclosure--justify" id="pay-terms-prepaid" hidden>
+          <strong>Before you pay — launch offer.</strong> One payment of <span id="payAmountPrepaid">the prepaid amount</span> (exclusive of taxes) covers the <strong>full 9-month term</strong>, counted from the delivery of your vehicle, with the <strong>15% launch discount</strong> already applied. <strong>No further payments and no automatic renewal</strong>: the membership ends 9 months after delivery, when the vehicle is returned. The prepaid amount is <strong>not refunded after delivery</strong>; returning the vehicle earlier does not shorten the amount paid. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
         </div>
         <div class="notice notice--info" id="sandboxNotice" role="status" hidden></div>
         <div class="notice notice--error" id="payNotice" hidden></div>
