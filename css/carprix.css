@@ -274,6 +274,8 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .plan__offer-note { font-size: 12.5px; color: var(--muted); }
 .plan__offer-note s { color: var(--muted-2); }
 .tier-picker--billing { grid-template-columns: 1fr; }
+.tier-picker--billing .tier-option__box { height: 100%; box-sizing: border-box; }
+.tier-picker--billing .tier-option__name { flex-wrap: wrap; gap: 4px 12px; }
 .tier-option--offer .tier-option__box { border-color: rgba(207, 254, 37, .45); }
 .offer-tag { color: var(--lime); font-weight: 700; }
 @media (min-width: 640px) { .tier-picker--billing { grid-template-columns: repeat(2, 1fr); } }
