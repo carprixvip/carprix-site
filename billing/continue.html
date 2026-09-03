@@ -73,10 +73,14 @@
       <!-- Step 1 of "sign": pay the first quarter (available as soon as the application exists and payments are open) -->
       <section class="card" id="v-pay" hidden>
         <div class="state-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div>
-        <h2>Next: pay the first quarter.</h2>
+        <h2 id="payTitle">Next: pay the first quarter.</h2>
         <p>You'll be taken to Stripe Checkout (card or US bank account, in USD). Right after the payment, the Subscription Agreement is sent from DocuSign — to you first, then to your co-responsible party.</p>
         <div class="disclosure" id="pay-terms">
           <strong>Before you pay.</strong> The first quarter (<span id="payAmount">the quarterly fee</span>, exclusive of taxes) is charged now, then every 3 months from delivery; your membership <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires settling the remaining balance and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
+        </div>
+        <!-- D24 (v0.3.8): prepaid launch offer — shown instead of the quarterly disclosure when the application chose it -->
+        <div class="disclosure" id="pay-terms-prepaid" hidden>
+          <strong>Before you pay — launch offer.</strong> One payment of <span id="payAmountPrepaid">the prepaid amount</span> (exclusive of taxes) covers the <strong>full 9-month term</strong>, counted from the delivery of your vehicle, with the <strong>20% launch discount</strong> already applied. <strong>No further payments and no automatic renewal</strong>: the membership ends 9 months after delivery, when the vehicle is returned. The prepaid amount is <strong>not refunded after delivery</strong>; returning the vehicle earlier does not shorten the amount paid. Delivery follows the signatures and the compliance review (identity, licence, insurance), within 30 days, at the meeting point confirmed at signing. Carprix may decline an application after review; the payment is then refunded in full.
         </div>
         <div class="notice notice--info" id="sandboxNotice" role="status" hidden></div>
         <div class="notice notice--error" id="payNotice" hidden></div>
@@ -309,9 +313,20 @@
       if (s === 'awaiting_payment') {
         if (!open) { show('v-prelaunch'); head('Thanks — your application is in.', 'Payments open at launch — we will e-mail you when checkout is available.'); return; }
         if (d.checkout_available) {
-          show('v-pay'); head('Thanks — your application is in.', 'Step 1: pay the first quarter. Step 2: you and your co-responsible party sign.');
+          var prepaid = d.billing === 'launch_prepay';
+          show('v-pay');
+          head('Thanks — your application is in.', prepaid ? 'Step 1: one payment for the full term (launch offer). Step 2: you and your co-responsible party sign.' : 'Step 1: pay the first quarter. Step 2: you and your co-responsible party sign.');
+          $('payTitle').textContent = prepaid ? 'Next: one payment for the full term.' : 'Next: pay the first quarter.';
+          $('pay-terms').hidden = prepaid; $('pay-terms-prepaid').hidden = !prepaid;
+          $('payBtn').innerHTML = (prepaid ? 'Pay the full term' : 'Pay first quarter') + ' <span class="arr" aria-hidden="true">→</span>';
+          $('payBtn').setAttribute('aria-describedby', prepaid ? 'pay-terms-prepaid' : 'pay-terms');
+          if (prepaid && d.commitment && d.commitment.prepaid_amount) $('payAmountPrepaid').textContent = CB.ui.formatUsd(d.commitment.prepaid_amount);
           // Sandbox payments (v0.3.7, D22): GET /health tells whether Checkout runs on Stripe test keys → notice above Pay
-          CB.health().then(function (h) { CB.ui.renderSandboxNotice($('sandboxNotice'), h); }).catch(function () {});
+          CB.health().then(function (h) {
+            CB.ui.renderSandboxNotice($('sandboxNotice'), h);
+            var o = prepaid ? CB.launchOfferFor(h, tier) : null;
+            if (o) $('payAmountPrepaid').textContent = CB.ui.formatUsd(o.amount);
+          }).catch(function () {});
         }
         else { show('v-pay-wait'); head('Your application is in.', 'Payment is not available right now.'); }
         return;
@@ -440,7 +455,8 @@
         .catch(function (err) {
           CB.ui.setBusy(btn, false);
           var msg = err.message;
-          if (err.status === 409 && err.code === 'already_paid') msg = 'The first quarter is already paid for this application. This page will refresh the status shortly.';
+          if (err.status === 409 && err.code === 'already_paid') msg = 'The payment is already on file for this application. This page will refresh the status shortly.';
+          else if (err.status === 409 && err.code === 'launch_offer_closed') msg = 'The launch offer has closed since you applied. Please submit a new application with quarterly billing, or contact the concierge.';
           else if (err.status === 409) msg = 'Checkout isn\'t available for this application. Contact the concierge if you think this is a mistake.';
           CB.ui.showNotice($('payNotice'), msg, 'error');
           lastKey = ''; delay = BASE; poll();

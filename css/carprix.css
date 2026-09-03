@@ -266,6 +266,18 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .pricing__foot { margin-top: 28px; font-size: 13.5px; line-height: 1.65; color: var(--muted); max-width: 90ch; }
 .pricing__foot strong { color: var(--text); font-weight: 600; }
 
+/* Launch offer (D24) — block inside the pricing cards + the join form's billing option */
+.plan__offer { margin: 14px 0 6px; padding: 12px 14px; border-radius: var(--radius-sm); border: 1px solid rgba(207, 254, 37, .45); background: rgba(207, 254, 37, .07); display: grid; gap: 4px; }
+.plan__offer-tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--lime); }
+.plan__offer-price { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -.01em; }
+.plan__offer-price small { font-family: var(--font-body, inherit); font-weight: 500; font-size: 12.5px; color: var(--muted); letter-spacing: 0; }
+.plan__offer-note { font-size: 12.5px; color: var(--muted); }
+.plan__offer-note s { color: var(--muted-2); }
+.tier-picker--billing { grid-template-columns: 1fr; }
+.tier-option--offer .tier-option__box { border-color: rgba(207, 254, 37, .45); }
+.offer-tag { color: var(--lime); font-weight: 700; }
+@media (min-width: 640px) { .tier-picker--billing { grid-template-columns: repeat(2, 1fr); } }
+
 /* Fleet — one column per tier (owner, 2026-09-03): the tier's two models stacked, captions under the images (never over
    the vehicle), a lime rule + tier name on top of each column so the grouping reads at a glance. */
 .fleet__tiers { display: grid; gap: 18px; grid-template-columns: 1fr; }

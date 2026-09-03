@@ -143,6 +143,11 @@
           <li>We confirm the next steps on screen and by e-mail. Full details in the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a>.</li>
         </ul>
       </div>
+      <!-- D24 (v0.3.8): prepaid memberships have nothing to cancel — shown instead of the form -->
+      <div class="notice notice--info mt-22" id="prepaidNote" role="status" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+        <div><strong>Your membership is prepaid for the full term and does not renew.</strong> It ends 9 months after the delivery of your vehicle (the date shows above once delivered), when the vehicle is returned at the meeting point confirmed at signing — nothing to cancel. To return the vehicle earlier, write to <a href="mailto:concierge@carprix.vip">concierge@carprix.vip</a>; the prepaid amount is not refunded.</div>
+      </div>
       <form id="cancelForm" class="form mt-22" novalidate>
         <div class="fields">
           <div class="field" id="f-capp">
@@ -252,14 +257,16 @@
         var tier = TIER_LABEL[String(d.tier || '').toLowerCase()];
         $('ov-lead').textContent = st[2] || '';
         var badge = $('ov-badge'); badge.textContent = st[0]; badge.className = 'badge' + (st[1] ? ' badge--' + st[1] : ''); badge.hidden = false;
+        var prepaid = d.billing === 'launch_prepay' || (cm && cm.prepaid === true);
         var rows = [
           ['Tier', tier ? tier + (v.model ? '' : ' — see the vehicles on carprix.vip') : ''],
+          ['Billing', prepaid ? 'Launch offer — full term prepaid in one payment (' + (cm.discount_pct || 20) + '% off) · no renewal' : (s === 'awaiting_payment' ? '' : 'Quarterly · renews automatically after the 3rd payment')],
           ['Vehicle', v.model], ['Registered in', CB.ui.countryName(v.jurisdiction)],
-          ['Payments made', (function () { var n = typeof cm.periods_paid === 'number' ? cm.periods_paid : (d.payment && d.payment.periods_paid); return typeof n === 'number' && s !== 'awaiting_payment' ? n + ' of ' + (cm.min_payments || 3) + ' minimum' : ''; })()],
+          ['Payments made', (function () { if (prepaid) return s === 'awaiting_payment' ? '' : (cm.prepaid_amount ? CB.ui.formatUsd(cm.prepaid_amount) + ' — full term paid' : 'Full term paid'); var n = typeof cm.periods_paid === 'number' ? cm.periods_paid : (d.payment && d.payment.periods_paid); return typeof n === 'number' && s !== 'awaiting_payment' ? n + ' of ' + (cm.min_payments || 3) + ' minimum' : ''; })()],
           ['Paid through', CB.ui.formatDate(d.payment && d.payment.paid_through)],
           ['Compliance review', (s === 'contract_signed' || s === 'kyc_review') ? (KYC_LABEL[d.kyc_status] || '') : ''],
           ['Handover meeting point', dl.meeting_point], ['Handover scheduled', dl.delivered_at ? '' : CB.ui.formatDateTime(when(dl))],
-          ['Delivered', CB.ui.formatDate(dl.delivered_at)], ['Minimum term runs to', CB.ui.formatDate(dl.term_end)],
+          ['Delivered', CB.ui.formatDate(dl.delivered_at)], [prepaid ? 'Membership ends (no renewal)' : 'Minimum term runs to', CB.ui.formatDate(dl.term_end || (cm && cm.term_end))],
           ['Membership ends', d.cancel && d.cancel.effective_at ? CB.ui.formatDate(d.cancel.effective_at) : ''],
           ['Remaining balance', s === 'termination_pending_payment' ? CB.ui.formatUsd(d.balance_due) : ''], ['Invoice due', s === 'termination_pending_payment' ? CB.ui.formatDate(term.due_at) : ''],
           ['Balance paid', CB.ui.formatDate(term.balance_paid_at)],
@@ -268,6 +275,7 @@
           ['Guardian Monitoring', (CB.gm.view(d).status !== 'not_requested' || ['terminated', 'refused', 'canceled'].indexOf(s) === -1) ? CB.gm.label(d) : ''],
         ];
         kv($('ov-kv'), rows);
+        $('prepaidNote').hidden = !prepaid; $('cancelForm').hidden = prepaid;
         CB.ui.renderGmNote($('gmStatus'), d, s);
         var inv = $('ov-invoice');
         if (s === 'termination_pending_payment' && CB.isInvoiceUrl(d.hosted_invoice_url)) { inv.href = d.hosted_invoice_url; inv.hidden = false; } else { inv.hidden = true; inv.removeAttribute('href'); }
@@ -374,6 +382,7 @@
         var eff = det.effective_at ? CB.ui.formatDate(det.effective_at) : '';
         if (err.status === 409) {
           if (err.code === 'no_subscription') msg = 'There is no active membership for this application yet.';
+          else if (err.code === 'prepaid_no_renewal') msg = err.message;
           else if (err.code === 'already_canceled') msg = 'This membership has already ended' + (eff ? ' (' + eff + ')' : '') + '.';
           else if (err.code === 'already_requested' || err.code === 'already_scheduled') msg = 'A notice of non-renewal is already registered for this membership' + (eff ? ' — effective ' + eff : '') + '. No further action is needed.';
           else if (err.code === 'termination_pending') msg = det.balance_paid ? 'Your early termination is in progress: the remaining balance is settled and the vehicle is returned at the meeting point confirmed at signing.'

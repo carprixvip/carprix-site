@@ -165,6 +165,42 @@
     return on;
   }
 
+  /**
+   * Launch offer (v0.3.8, D24): GET /health.launch_offer = { enabled, discount_pct, quarters, term_months, renews:false,
+   * prices: { alfa: { amount, full_amount, savings, quarterly_amount } … } } — the whole 9-month term prepaid in ONE payment
+   * with 20 % off, no automatic renewal, alongside quarterly billing. Absent/closed → null (older API or offer closed).
+   */
+  function launchOffer(health) {
+    var o = health && health.launch_offer;
+    if (!o || o.enabled !== true || !o.prices) return null;
+    return o;
+  }
+
+  /** Amounts of the offer for a tier (cents) or null. */
+  function launchOfferFor(health, tier) {
+    var o = launchOffer(health);
+    var p = o && o.prices && o.prices[String(tier || '').toLowerCase()];
+    return p ? { amount: p.amount, full_amount: p.full_amount, savings: p.savings, quarterly_amount: p.quarterly_amount, discount_pct: o.discount_pct, term_months: o.term_months || 9 } : null;
+  }
+
+  /** Toggle every `[data-launch-offer]` element (and fill `[data-offer-amount|savings|full]` children) from GET /health. */
+  function renderLaunchOffer(root, health) {
+    var o = launchOffer(health);
+    var nodes = (root || document).querySelectorAll('[data-launch-offer]');
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i], tier = el.getAttribute('data-launch-offer');
+      var p = o && tier ? launchOfferFor(health, tier) : null;
+      if (o && tier && !p) { el.hidden = true; continue; }
+      el.hidden = !o;
+      if (p) {
+        var a = el.querySelector('[data-offer-amount]'); if (a) a.textContent = formatUsd(p.amount);
+        var sv = el.querySelector('[data-offer-savings]'); if (sv) sv.textContent = formatUsd(p.savings);
+        var f = el.querySelector('[data-offer-full]'); if (f) f.textContent = formatUsd(p.full_amount);
+      }
+    }
+    return !!o;
+  }
+
   function apply(payload) {
     return Promise.resolve().then(function () {
       var p = payload || {};
@@ -183,6 +219,8 @@
       if (c.phone) body.cosigner.phone = String(c.phone).trim();
       // D16 — optional Guardian Monitoring request (v0.3.3 persists it). Only a real boolean: the API rejects "true"/1 with 400.
       if (typeof p.guardian_monitoring === 'boolean') body.guardian_monitoring = p.guardian_monitoring;
+      // D24 (v0.3.8) — billing mode: 'quarterly' (default) or 'launch_prepay' (whole term in one payment, 20 % off) while the offer is open.
+      if (p.billing === 'launch_prepay' || p.billing === 'quarterly') body.billing = p.billing;
       return request('POST', '/apply', body);
     });
   }
@@ -361,6 +399,8 @@
     guardianMonitoring: guardianMonitoring,
     paymentsOpen: paymentsOpen,
     sandboxPayments: sandboxPayments,
+    launchOffer: launchOffer,
+    launchOfferFor: launchOfferFor,
     preview: PREVIEW,
     api: API,
     ApiError: ApiError,
@@ -369,6 +409,6 @@
     isEmail: function (v) { return EMAIL_RE.test(String(v || '').trim()); },
     isInvoiceUrl: isInvoiceUrl,
     gm: { view: gmView, label: gmLabel, describe: gmDescribe },
-    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, renderGmNote: renderGmNote, renderSandboxNotice: renderSandboxNotice, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
+    ui: { qs: qs, pageUrl: pageUrl, setBusy: setBusy, showNotice: showNotice, hideNotice: hideNotice, renderGmNote: renderGmNote, renderSandboxNotice: renderSandboxNotice, renderLaunchOffer: renderLaunchOffer, formatDate: formatDate, formatDateTime: formatDateTime, formatUsd: formatUsd, countryName: countryName },
   };
 })();

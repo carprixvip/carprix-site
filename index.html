@@ -167,8 +167,14 @@
         <p class="plan__vehicles">Audi Q3 · Land Rover Evoque <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
         <div class="plan__price"><span class="plan__amount">USD 12,000</span><span class="plan__period">/ quarter</span></div>
         <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <!-- D24 launch offer (v0.3.8): amounts mirror lambda/src/lib/catalog.mjs launchPrepayAmount(); hidden by JS when GET /health says the offer is closed -->
+        <div class="plan__offer" data-launch-offer="alfa">
+          <span class="plan__offer-tag">Launch offer · save 20%</span>
+          <span class="plan__offer-price"><span data-offer-amount>USD 28,800</span> <small>once — the full 9-month term</small></span>
+          <span class="plan__offer-note">Instead of <s data-offer-full>USD 36,000</s> · one payment · no automatic renewal</span>
+        </div>
         <ul class="plan__features">
-          <li>USD 12,000 now, then every 3 months from delivery</li>
+          <li>USD 12,000 now, then every 3 months from delivery — or one prepaid payment with the launch offer</li>
           <li>One agreement, signed by you and your co-responsible party</li>
           <li>Handover within 30 days at the meeting point confirmed at signing</li>
           <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
@@ -181,8 +187,14 @@
         <p class="plan__vehicles">Audi Q5 · BMW X4 <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
         <div class="plan__price"><span class="plan__amount">USD 18,000</span><span class="plan__period">/ quarter</span></div>
         <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <!-- D24 launch offer (v0.3.8): amounts mirror lambda/src/lib/catalog.mjs launchPrepayAmount(); hidden by JS when GET /health says the offer is closed -->
+        <div class="plan__offer" data-launch-offer="bravo">
+          <span class="plan__offer-tag">Launch offer · save 20%</span>
+          <span class="plan__offer-price"><span data-offer-amount>USD 43,200</span> <small>once — the full 9-month term</small></span>
+          <span class="plan__offer-note">Instead of <s data-offer-full>USD 54,000</s> · one payment · no automatic renewal</span>
+        </div>
         <ul class="plan__features">
-          <li>USD 18,000 now, then every 3 months from delivery</li>
+          <li>USD 18,000 now, then every 3 months from delivery — or one prepaid payment with the launch offer</li>
           <li>One agreement, signed by you and your co-responsible party</li>
           <li>Handover within 30 days at the meeting point confirmed at signing</li>
           <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
@@ -195,8 +207,14 @@
         <p class="plan__vehicles">BMW X5 · Land Rover Defender <small>Representative of the tier; the vehicle is confirmed before delivery</small></p>
         <div class="plan__price"><span class="plan__amount">USD 24,000</span><span class="plan__period">/ quarter</span></div>
         <p class="plan__note">Minimum 3 quarterly payments · billed in advance, in USD · renews automatically · non-refundable after delivery</p>
+        <!-- D24 launch offer (v0.3.8): amounts mirror lambda/src/lib/catalog.mjs launchPrepayAmount(); hidden by JS when GET /health says the offer is closed -->
+        <div class="plan__offer" data-launch-offer="delta">
+          <span class="plan__offer-tag">Launch offer · save 20%</span>
+          <span class="plan__offer-price"><span data-offer-amount>USD 57,600</span> <small>once — the full 9-month term</small></span>
+          <span class="plan__offer-note">Instead of <s data-offer-full>USD 72,000</s> · one payment · no automatic renewal</span>
+        </div>
         <ul class="plan__features">
-          <li>USD 24,000 now, then every 3 months from delivery</li>
+          <li>USD 24,000 now, then every 3 months from delivery — or one prepaid payment with the launch offer</li>
           <li>One agreement, signed by you and your co-responsible party</li>
           <li>Handover within 30 days at the meeting point confirmed at signing</li>
           <li>Insurance arranged by you; driver requirements in the Subscription Agreement</li>
@@ -206,7 +224,7 @@
     </div>
 
     <p class="pricing__foot reveal">
-      <strong>Prices in USD, exclusive of taxes.</strong> The first quarter is paid at checkout; the second and third are charged three and six months after delivery, then one quarter at the start of each renewal period — automatically, to the payment method on file. <strong>Minimum three quarterly payments (9 months from delivery).</strong> You may stop renewal at any time; ending the membership before the three payments requires settling the remaining balance and returning the vehicle intact. <strong>Quarterly fees are not refunded after delivery.</strong> A co-responsible party (co-signer) is required. You accept the <a href="/terms/">Terms of Use</a>, the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a> and the <a href="/privacy/">Privacy Policy</a> when you apply, and confirm them again at checkout.
+      <strong>Prices in USD, exclusive of taxes.</strong> The first quarter is paid at checkout; the second and third are charged three and six months after delivery, then one quarter at the start of each renewal period — automatically, to the payment method on file. <strong>Minimum three quarterly payments (9 months from delivery).</strong> You may stop renewal at any time; ending the membership before the three payments requires settling the remaining balance and returning the vehicle intact. <strong>Quarterly fees are not refunded after delivery.</strong> <span data-launch-offer><strong>Launch offer:</strong> for a limited time you may instead pay the full 9-month term in one payment with 20% off; that membership has no further payments and does not renew — it ends 9 months after delivery. Carprix may close the offer at any time; applications already paid are honoured.</span> A co-responsible party (co-signer) is required. You accept the <a href="/terms/">Terms of Use</a>, the <a href="/refund-policy/">Refund &amp; Cancellation Policy</a> and the <a href="/privacy/">Privacy Policy</a> when you apply, and confirm them again at checkout.
     </p>
   </div>
 </section>
@@ -428,5 +446,13 @@
 </footer>
 
 <script src="/js/site.js" defer></script>
+<script src="/js/billing.js" defer></script>
+<script>
+  // D24: hide the launch-offer blocks when the API says the offer is closed (default markup shows them; the API is the switch).
+  window.addEventListener('DOMContentLoaded', function () {
+    if (!window.CB || !CB.health) return;
+    CB.health().then(function (h) { CB.ui.renderLaunchOffer(document, h); }).catch(function () {});
+  });
+</script>
 </body>
 </html>

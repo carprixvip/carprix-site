@@ -96,6 +96,33 @@
         </fieldset>
       </div>
 
+      <!-- D24 (v0.3.8): how you pay — quarterly (default) or the launch offer (whole 9-month term in one payment, 20 % off,
+           no renewal). Shown only while GET /health.launch_offer.enabled is true; amounts come from the API. -->
+      <div class="card" id="billingCard" data-launch-offer hidden>
+        <fieldset>
+          <legend id="billing-legend">How you pay <small>Both options cover the same 9-month minimum term. Prices in USD, exclusive of taxes.</small></legend>
+          <div class="field" id="field-billing">
+            <div class="tier-picker tier-picker--billing" role="radiogroup" aria-labelledby="billing-legend">
+              <label class="tier-option">
+                <input type="radio" name="billing" value="quarterly" checked>
+                <span class="tier-option__box">
+                  <span class="tier-option__name">Quarterly <span class="tier-option__price" id="billingQuarterlyAmount">USD 12,000 <span class="visually-hidden">per quarter</span></span></span>
+                  <span class="tier-option__vehicles">First quarter now, then every 3 months from delivery · renews automatically after the 3rd payment</span>
+                </span>
+              </label>
+              <label class="tier-option tier-option--offer">
+                <input type="radio" name="billing" value="launch_prepay">
+                <span class="tier-option__box">
+                  <span class="tier-option__name">Launch offer <span class="tier-option__price" data-offer-amount>USD 28,800</span></span>
+                  <span class="tier-option__vehicles"><strong class="offer-tag">Save <span data-offer-pct>20</span>%</strong> — the full 9-month term in <strong>one payment</strong> (instead of <span data-offer-full>USD 36,000</span>). No further payments, no automatic renewal: the membership ends 9 months after delivery.</span>
+                </span>
+              </label>
+            </div>
+            <p class="field__hint">Limited launch offer — Carprix may close it at any time; applications already paid are honoured.</p>
+          </div>
+        </fieldset>
+      </div>
+
       <div class="card">
         <fieldset>
           <legend>Member <small>The person whose name the membership is in and who pays the quarterly fee. Signs first.</small></legend>
@@ -158,7 +185,7 @@
         <h2>Before you continue</h2>
         <p>Please read — these terms apply to every Carprix membership.</p>
         <div class="disclosure" id="key-terms">
-          <strong>Key terms.</strong> Your membership is <strong>billed quarterly in advance, in USD</strong>, and <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires <strong>settling the remaining balance</strong> and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. After payment you and your co-responsible party sign the Subscription Agreement (you first) and we complete the compliance review — identity, licence, insurance. Carprix may decline an application after review; the payment is then refunded in full. Delivery within 30 days at the handover meeting point confirmed at signing. <strong>Insurance is your responsibility.</strong> The member and the co-responsible party are <strong>jointly and severally responsible</strong> under the agreement. <strong>Drivers under 25:</strong> the insurance deductible may be up to USD 5,000 per claim, a refundable Additional Security Deposit equal to that deductible is invoiced before delivery, and Guardian Monitoring is included at no fee for members under 25.
+          <strong>Key terms.</strong> Your membership is <strong>billed quarterly in advance, in USD</strong>, and <strong>renews automatically</strong>. The <strong>minimum commitment is 3 quarterly payments</strong> — 9 months, counted from the delivery of your vehicle; the first payment is held as a reservation deposit until delivery. Ending the membership before the 3 payments requires <strong>settling the remaining balance</strong> and returning the vehicle intact; <strong>quarterly fees are not refunded after delivery</strong>. After payment you and your co-responsible party sign the Subscription Agreement (you first) and we complete the compliance review — identity, licence, insurance. Carprix may decline an application after review; the payment is then refunded in full. Delivery within 30 days at the handover meeting point confirmed at signing. <strong>Insurance is your responsibility.</strong> The member and the co-responsible party are <strong>jointly and severally responsible</strong> under the agreement. <strong>Launch offer (prepaid term):</strong> if you choose to pay the full 9-month term in one payment, the 20% discount applies to that single payment, no further fees are charged, the membership does not renew and ends 9 months after delivery; the prepaid amount is not refunded after delivery (a refusal by Carprix after review is refunded in full). <strong>Drivers under 25:</strong> the insurance deductible may be up to USD 5,000 per claim, a refundable Additional Security Deposit equal to that deductible is invoiced before delivery, and Guardian Monitoring is included at no fee for members under 25.
         </div>
         <div class="field mt-18" id="field-terms">
           <label class="check">
@@ -212,6 +239,24 @@
     // Payments gate (D12 GO 4): while the API runs on the Stripe sandbox, applications are registered
     // but no payment is offered — unless ?preview=1 (internal testing). The real gate for the Pay button
     // is continue.html (GET /status); a failed /health call leaves the normal copy in place.
+    // Launch offer (D24, v0.3.8): the "How you pay" card appears only while GET /health says the offer is open; the
+    // amounts shown follow the selected tier and come from the API (single source of truth with Stripe).
+    var launchHealth = null;
+    function refreshBillingAmounts() {
+      var t = form.querySelector('input[name="tier"]:checked');
+      var tier = t ? t.value : null;
+      var offer = tier ? CB.launchOfferFor(launchHealth, tier) : null;
+      var card = document.getElementById('billingCard');
+      if (!offer) { card.hidden = true; var q = form.querySelector('input[name="billing"][value="quarterly"]'); if (q) q.checked = true; return; }
+      card.hidden = false;
+      document.getElementById('billingQuarterlyAmount').innerHTML = CB.ui.formatUsd(offer.quarterly_amount) + ' <span class="visually-hidden">per quarter</span>';
+      card.querySelector('[data-offer-amount]').textContent = CB.ui.formatUsd(offer.amount);
+      card.querySelector('[data-offer-full]').textContent = CB.ui.formatUsd(offer.full_amount);
+      card.querySelector('[data-offer-pct]').textContent = String(offer.discount_pct);
+    }
+    CB.health().then(function (h) { launchHealth = h; refreshBillingAmounts(); }).catch(function () { /* offer stays hidden */ });
+    form.addEventListener('change', function (e) { if (e.target && e.target.name === 'tier') refreshBillingAmounts(); });
+
     if (!CB.preview) {
       CB.health().then(function (h) {
         if (CB.paymentsOpen(h)) { CB.ui.renderSandboxNotice(document.getElementById('sandboxNotice'), h); return; }
@@ -292,6 +337,7 @@
         cosigner: { name: field('c-name').value, email: field('c-email').value, phone: field('c-phone').value },
         accepted_terms_version: form.querySelector('input[name="accepted_terms_version"]').value,
         guardian_monitoring: field('gm').checked, // Guardian Monitoring (D16) — optional, persisted by the API (v0.3.3)
+        billing: (!document.getElementById('billingCard').hidden && form.querySelector('input[name="billing"]:checked') && form.querySelector('input[name="billing"]:checked').value === 'launch_prepay') ? 'launch_prepay' : 'quarterly', // D24
       };
       CB.ui.setBusy(submitBtn, true, 'Sending your application…');
       form.setAttribute('aria-busy', 'true');
@@ -305,6 +351,7 @@
         CB.ui.setBusy(submitBtn, false);
         var msg = err && err.message ? err.message : 'Something went wrong. Please try again.';
         if (err && err.status === 400 && /tier/i.test(msg)) msg = 'That tier is not available right now. Choose another tier or contact the concierge.';
+        else if (err && err.status === 400 && /launch offer/i.test(msg)) { msg = 'The launch offer has just closed. Your application can continue with quarterly billing — choose "Quarterly" and send it again.'; launchHealth = null; refreshBillingAmounts(); }
         CB.ui.showNotice(notice, msg, 'error');
         notice.focus && notice.setAttribute('tabindex', '-1');
         notice.focus();
