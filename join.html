@@ -6,7 +6,7 @@
 <title>Apply — Carprix membership</title>
 <meta name="description" content="Start your Carprix membership: choose your tier, tell us who's signing, pay the first quarter, then sign the Subscription Agreement with your co-responsible party. Nothing is charged on this page.">
 <meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://carprixapp.com/join.html">
+<link rel="canonical" href="https://carprix.vip/join.html">
 <meta name="theme-color" content="#050604">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
@@ -165,14 +165,14 @@
           </label>
           <p class="field__error" id="err-terms">You need to accept the Terms to continue.</p>
         </div>
-        <input type="hidden" name="accepted_terms_version" value="2026-09">
+        <input type="hidden" name="accepted_terms_version" value="2026-09-03">
 
         <div class="notice notice--error" id="formNotice" hidden></div>
 
         <div class="card__actions">
           <button class="btn btn-lime" type="submit" id="submitBtn">Continue to payment <span class="arr" aria-hidden="true">→</span></button>
         </div>
-        <p class="fine mt-16" id="finePrint">Nothing is charged on this page. We use these details to set up your payment and to prepare and send your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a></p>
+        <p class="fine mt-16" id="finePrint">Nothing is charged on this page. We use these details to set up your payment and to prepare and send your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprix.vip">concierge@carprix.vip</a></p>
       </div>
     </form>
 
@@ -216,7 +216,7 @@
         document.getElementById('prelaunchNotice').hidden = false;
         document.getElementById('lead').innerHTML = 'Tell us who’s signing. <strong>Payments open at launch:</strong> your application is registered now and we e-mail you when checkout opens. You then pay the first quarter and the Subscription Agreement arrives from DocuSign — you sign first, then your co-responsible party. <strong>Nothing is charged on this page.</strong>';
         submitBtn.innerHTML = 'Register my application <span class="arr" aria-hidden="true">→</span>';
-        document.getElementById('finePrint').innerHTML = 'Nothing is charged on this page. We keep these details to open your checkout at launch and to prepare your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprixapp.com">concierge@carprixapp.com</a>';
+        document.getElementById('finePrint').innerHTML = 'Nothing is charged on this page. We keep these details to open your checkout at launch and to prepare your Subscription Agreement — see our <a href="/privacy/">Privacy Policy</a>. Questions? <a href="mailto:concierge@carprix.vip">concierge@carprix.vip</a>';
       }).catch(function () { /* keep the default copy; continue.html decides whether Pay is shown */ });
     }
 

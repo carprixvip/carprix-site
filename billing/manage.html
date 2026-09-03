@@ -6,7 +6,7 @@
 <title>Manage billing — Carprix</title>
 <meta name="description" content="Update your payment method, download invoices, request Guardian Monitoring, give notice of non-renewal or end your Carprix membership early.">
 <meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://carprixapp.com/billing/manage.html">
+<link rel="canonical" href="https://carprix.vip/billing/manage.html">
 <meta name="theme-color" content="#050604">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
@@ -32,7 +32,7 @@
       <a href="/#faq">FAQ</a>
       <a href="/#contact">Contact</a>
     </nav>
-    <a class="btn btn-ghost" href="mailto:concierge@carprixapp.com?subject=Carprix%20billing">Help</a>
+    <a class="btn btn-ghost" href="mailto:concierge@carprix.vip?subject=Carprix%20billing">Help</a>
     <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
       <svg class="ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -175,7 +175,7 @@
       </form>
     </section>
 
-    <p class="fine mt-24">Prefer to talk to someone? <a href="mailto:concierge@carprixapp.com?subject=Carprix%20billing">concierge@carprixapp.com</a>. Requests by e-mail from the address used to sign the agreement are handled under the same rules. Billing questions: <a href="mailto:billing@carprixapp.com">billing@carprixapp.com</a>.</p>
+    <p class="fine mt-24">Prefer to talk to someone? <a href="mailto:concierge@carprix.vip?subject=Carprix%20billing">concierge@carprix.vip</a>. Requests by e-mail from the address used to sign the agreement are handled under the same rules. Billing questions: <a href="mailto:billing@carprix.vip">billing@carprix.vip</a>.</p>
 
   </div>
 </main>
@@ -253,7 +253,7 @@
         $('ov-lead').textContent = st[2] || '';
         var badge = $('ov-badge'); badge.textContent = st[0]; badge.className = 'badge' + (st[1] ? ' badge--' + st[1] : ''); badge.hidden = false;
         var rows = [
-          ['Tier', tier ? tier + (v.model ? '' : ' — see the vehicles on carprixapp.com') : ''],
+          ['Tier', tier ? tier + (v.model ? '' : ' — see the vehicles on carprix.vip') : ''],
           ['Vehicle', v.model], ['Registered in', CB.ui.countryName(v.jurisdiction)],
           ['Payments made', (function () { var n = typeof cm.periods_paid === 'number' ? cm.periods_paid : (d.payment && d.payment.periods_paid); return typeof n === 'number' && s !== 'awaiting_payment' ? n + ' of ' + (cm.min_payments || 3) + ' minimum' : ''; })()],
           ['Paid through', CB.ui.formatDate(d.payment && d.payment.paid_through)],

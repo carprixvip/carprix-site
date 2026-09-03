@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /billing/
-Sitemap: https://carprixapp.com/sitemap.xml
+Sitemap: https://carprix.vip/sitemap.xml

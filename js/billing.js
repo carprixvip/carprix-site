@@ -1,4 +1,4 @@
-/* Carprix — billing client for the static site (carprixapp.com).
+/* Carprix — billing client for the static site (carprix.vip — D20; carprixapp.com and www redirect there).
  * Talks only to the Carprix billing API (docs/API-v0.3.md, v0.3.1 — pay → sign → verify → drive). Every URL
  * it receives back (Checkout, Customer Portal, Stripe-hosted invoice) is Stripe-hosted. No Stripe key,
  * no Stripe.js on the page.
@@ -22,9 +22,11 @@
  *                                                        | { accepted, mode: 'early_termination', balance_due, hosted_invoice_url, due_at?, message }
  *   guardianMonitoring(applicationId, email)  POST /guardian-monitoring → { accepted, already_requested, guardian_monitoring{requested,requested_at,status}, message }
  *
- * API base (v0.3.1): production `https://billing.carprixapp.com` when the page is served from carprixapp.com;
- * `https://billing-test.carprixapp.com` when the URL has `?api=test` or the page host is anything else
- * (localhost, file://, GitHub Pages preview). `window.CARPRIX_BILLING_API` (set before this script) overrides both.
+ * API base (v0.3.1, hosts v0.3.5/D20): production `https://billing.carprixapp.com` when the page is served from a
+ * production host — carprix.vip, www.carprix.vip and, during the transition, carprixapp.com / www.carprixapp.com
+ * (the API and Stripe's pay.carprixapp.com stay on carprixapp.com); `https://billing-test.carprixapp.com` when the URL
+ * has `?api=test` or the page host is anything else (localhost, file://, GitHub Pages preview).
+ * `window.CARPRIX_BILLING_API` (set before this script) overrides both.
  *
  * Payments gate (v0.3.1, D12 GO 4): while the stack runs on the Stripe sandbox the API returns `payments_enabled: false`;
  * the pages then hide the Pay button and show "Payments open at launch" — unless the URL has `?preview=1`
@@ -40,7 +42,9 @@
 
   var API_PROD = 'https://billing.carprixapp.com';
   var API_TEST = 'https://billing-test.carprixapp.com';
-  var PROD_HOSTS = ['carprixapp.com', 'www.carprixapp.com'];
+  // D20 (v0.3.5): the site lives on carprix.vip; the carprixapp.com hosts stay listed while they still serve the site
+  // (until the 301 redirect is live) — a page served from any of these MUST talk to the production API.
+  var PROD_HOSTS = ['carprix.vip', 'www.carprix.vip', 'carprixapp.com', 'www.carprixapp.com'];
   // D17: English is the only language for now. One place to switch Intl formatting when other languages arrive
   // (read from <html lang> so a future /fr/ page formats dates and numbers in French without touching this file).
   var LOCALE = (document.documentElement && document.documentElement.lang) || 'en-US';
