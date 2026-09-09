@@ -395,6 +395,13 @@ h2 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 700; }
 .foot-links .col .t { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .foot-links .col a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14.5px; color: var(--text); opacity: .85; transition: color .2s; }
 .foot-links .col a:hover { color: var(--lime); opacity: 1; }
+/* D26/S5 (2026-09-09): company identification + payment-security line above the copyright row (Stripe website checklist) */
+.foot-legal { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); display: grid; gap: 8px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.foot-legal p { margin: 0; max-width: none; }
+.foot-legal strong { color: var(--text); font-weight: 600; }
+.foot-legal a { color: var(--text); opacity: .85; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 8px 2px; margin: -8px -2px; }
+.foot-legal a:hover { color: var(--lime); opacity: 1; }
+.foot-legal + .foot-bottom { margin-top: 20px; }
 .foot-bottom { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
 .foot-bottom b { color: var(--lime); font-weight: 600; }
 .foot-bottom a { display: inline-block; padding: 12px 4px; margin: -12px -4px; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
